@@ -35,10 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         mList.setAdapter(adapter);  // 리스트 뷰와 데이터 연결할 어댑터
-/*
+
+        /*
         list.add()*/
-
-
 
         /*
         List<String> m_nameList = database.medicineDao().getNameAll();  // MedicineDB의 약 이름 저장한 리스트
