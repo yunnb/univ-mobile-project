@@ -19,7 +19,7 @@ public interface MedicineDao {
     void setDeleteMedicine(Medicine medicine);
 
     // 조회 쿼리
-    @Query("SELECT * FROM medicine")  // 데이터베이스에 요청하는 명령문
+    @Query("SELECT * FROM Medicine")  // 데이터베이스에 요청하는 명령문
     List<Medicine> getAll();
 
     @Query("SELECT name FROM Medicine")

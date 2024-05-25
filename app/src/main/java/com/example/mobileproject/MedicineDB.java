@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 @Database(entities = {Medicine.class}, version = 100)
 public abstract class MedicineDB extends RoomDatabase {
-    private static MedicineDB INSTANCE; // 객체는 하나만 생성
+    private static MedicineDB INSTANCE = null; // 객체는 하나만 생성
     public abstract MedicineDao medicineDao();
 
     // DB 객체 반환

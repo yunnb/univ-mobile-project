@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         List<Medicine> medicines = medicineDB.medicineDao().getAll();
         System.out.println("medicines = " + medicines);
 
-/*      medicineInfoDB = MedicineInfoDB.getInstance(this);   // 약 정보 디비
+    /*    medicineInfoDB = MedicineInfoDB.getInstance(this);   // 약 정보 디비
         List<MedicineInfo> medicineInfos = medicineInfoDB.medicineInfoDao().getAll();
         System.out.println("medicineInfos = " + medicineInfos);*/
 

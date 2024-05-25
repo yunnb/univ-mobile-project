@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 @Database(entities = {MedicineInfo.class}, version = 101)
 public abstract class MedicineInfoDB extends RoomDatabase {
-    private static MedicineInfoDB INSTANCE;  // 객체는 하나만 생성
+    private static MedicineInfoDB INSTANCE = null;  // 객체는 하나만 생성
     public abstract MedicineInfoDao medicineInfoDao();
 
     public static MedicineInfoDB getInstance(Context context){
@@ -19,5 +19,8 @@ public abstract class MedicineInfoDB extends RoomDatabase {
                     .build();
         }
         return  INSTANCE;
+    }
+    public static void destroyInstance() {
+        INSTANCE = null;
     }
 }

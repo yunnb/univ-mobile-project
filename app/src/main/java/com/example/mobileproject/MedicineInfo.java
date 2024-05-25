@@ -1,17 +1,25 @@
 package com.example.mobileproject;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "medicineInfo")
 public class MedicineInfo {
     @PrimaryKey
+    @ColumnInfo(name="id")
     private int id;             // 품목 일련 번호
+    @ColumnInfo(name="effect")
     private String effect;      // 효능효과
+    @ColumnInfo(name="capacity")
     private String capacity;    // 용법용량
+    @ColumnInfo(name="caution")
     private String caution;     // 주의사항
+    @ColumnInfo(name="attach")
     private String attach;      // 첨부문서
+    @ColumnInfo(name="storage")
     private String storage;     // 저장방법
+    @ColumnInfo(name="validity")
     private String validity;    // 유효기간
 
     public int getId() {
