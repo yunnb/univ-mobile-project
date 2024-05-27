@@ -1,22 +1,25 @@
 package com.example.mobileproject;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.mobileproject.database.Medicine;
 import com.example.mobileproject.database.MedicineDB;
 import com.example.mobileproject.database.MedicineInfoDB;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
     private MedicineDB medicineDB = null;               // 약 디비
     private MedicineInfoDB medicineInfoDB = null;   // 약 정보 디비
     private List<Medicine> medicineList = new ArrayList<>(); // 약 객체 리스트
@@ -27,13 +30,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-
         medicineDB = MedicineDB.getInstance(this);
         medicineInfoDB = MedicineInfoDB.getInstance(this);
 
-        /*setList();
+        setList();
 
         Button searchBtn = (Button) findViewById(R.id.searchBtn);
         EditText searchEdit = (EditText) findViewById(R.id.search);
@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
                 String searchMedicine = searchEdit.getText().toString();
                 searchMedicine(searchMedicine);
             }
-        });*/
+        });
     }
-/*
+
     void setList() {
         ListView listView = (ListView) findViewById(R.id.medicineList);                // 리스트 뷰
         medicineList = medicineDB.medicineDao().getAll();     // MedicineDB의 약 객체 리스트
@@ -84,5 +84,5 @@ public class MainActivity extends AppCompatActivity {
         adapter.clear();
         adapter.addAll(filteredList);
         adapter.notifyDataSetChanged();
-    }*/
+    }
 }
