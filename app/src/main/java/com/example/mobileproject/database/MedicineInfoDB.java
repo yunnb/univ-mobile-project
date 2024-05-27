@@ -1,4 +1,4 @@
-package com.example.mobileproject;
+package com.example.mobileproject.database;
 
 import android.content.Context;
 

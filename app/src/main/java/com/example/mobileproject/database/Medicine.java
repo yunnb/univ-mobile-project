@@ -1,4 +1,4 @@
-package com.example.mobileproject;
+package com.example.mobileproject.database;
 
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;

@@ -1,57 +1,88 @@
 package com.example.mobileproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
+
+import com.example.mobileproject.database.Medicine;
+import com.example.mobileproject.database.MedicineDB;
+import com.example.mobileproject.database.MedicineInfoDB;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private MedicineDB medicineDB = null;
-    private MedicineInfoDB medicineInfoDB = null;
+
+    private MedicineDB medicineDB = null;               // 약 디비
+    private MedicineInfoDB medicineInfoDB = null;   // 약 정보 디비
+    private List<Medicine> medicineList = new ArrayList<>(); // 약 객체 리스트
+    private ArrayAdapter<String> adapter;               // 어댑터
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button searchBtn;
-        searchBtn = (Button) findViewById(R.id.searchBtn);
-
-        medicineDB = MedicineDB.getInstance(this);    // 약 디비
-        List<String> medicines = medicineDB.medicineDao().getNameAll();
-        System.out.println("medicines = " + medicines);
-
-        medicineInfoDB = MedicineInfoDB.getInstance(this);   // 약 정보 디비
-        List<Integer> medicineInfos = medicineInfoDB.medicineInfoDao().getIdAll();
-        System.out.println("medicineInfos = " + medicineInfos);
-
-        ListView mList = (ListView) findViewById(R.id.medicineList);    // 리스트 뷰
-        List<String> list = new ArrayList<>();                          // 리스트 뷰에서 사용할 리스트
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
-        mList.setAdapter(adapter);  // 리스트 뷰와 데이터 연결할 어댑터
-
-        /*
-        list.add()*/
-
-        /*
-        List<String> m_nameList = database.medicineDao().getNameAll();  // MedicineDB의 약 이름 저장한 리스트
-        // 얘 실행 시 오류남
-
-        String[] nameArr = m_nameList.toArray(new String[m_nameList.size()]);
-
-        for (int i = 0; i < nameArr.length; i++) {
-            list.add(nameArr[i]);
-        }*/
-        list.add("ㅎㅇ");
-/*
-        List<Medicine> ml = medicineDao.getAll();*/
 
 
+
+        medicineDB = MedicineDB.getInstance(this);
+        medicineInfoDB = MedicineInfoDB.getInstance(this);
+
+        /*setList();
+
+        Button searchBtn = (Button) findViewById(R.id.searchBtn);
+        EditText searchEdit = (EditText) findViewById(R.id.search);
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchMedicine = searchEdit.getText().toString();
+                searchMedicine(searchMedicine);
+            }
+        });*/
     }
+/*
+    void setList() {
+        ListView listView = (ListView) findViewById(R.id.medicineList);                // 리스트 뷰
+        medicineList = medicineDB.medicineDao().getAll();     // MedicineDB의 약 객체 리스트
+
+        // 약 이름 리스트 생성
+        List<String> nameList = new ArrayList<>();
+        for (Medicine medicine : medicineList) { nameList.add(medicine.getName()); }
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, nameList);
+        listView.setAdapter(adapter);  // 리스트 뷰와 데이터 연결할 어댑터
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Medicine selectedMedicine = medicineList.get(position);
+                int selectedMedicineId = selectedMedicine.getId();
+                String selectedMedicineName = selectedMedicine.getName();
+
+                Toast.makeText(getApplicationContext(), "ID: " + selectedMedicineId + ", Name: " + selectedMedicineName, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, MedicineInfo.class);
+                intent.putExtra("MEDICINE_ID", selectedMedicineId);
+                intent.putExtra("MEDICINE_NAME", selectedMedicineName);
+                startActivity(intent);
+            }
+        });
+    }
+
+    void searchMedicine(String searchMedicine) {
+        List<String> filteredList = new ArrayList<>();
+        for (Medicine medicine : medicineList) {
+            if (medicine.getName().toLowerCase().contains(searchMedicine.toLowerCase())) {
+                filteredList.add(medicine.getName());
+            }
+        }
+
+        adapter.clear();
+        adapter.addAll(filteredList);
+        adapter.notifyDataSetChanged();
+    }*/
 }
