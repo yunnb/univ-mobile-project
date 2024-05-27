@@ -22,4 +22,6 @@ public interface MedicineInfoDao {
     @Query("SELECT * FROM MedicineInfo")
     List<MedicineInfo> getAll();
 
+    @Query("SELECT id FROM MedicineInfo")
+    List<Integer> getIdAll();
 }

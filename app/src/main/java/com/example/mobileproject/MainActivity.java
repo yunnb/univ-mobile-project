@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private MedicineDB medicineDB = null;
-    /*private MedicineInfoDB medicineInfoDB = null;*/
+    private MedicineInfoDB medicineInfoDB = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +23,12 @@ public class MainActivity extends AppCompatActivity {
         searchBtn = (Button) findViewById(R.id.searchBtn);
 
         medicineDB = MedicineDB.getInstance(this);    // 약 디비
-        List<Medicine> medicines = medicineDB.medicineDao().getAll();
+        List<String> medicines = medicineDB.medicineDao().getNameAll();
         System.out.println("medicines = " + medicines);
 
-    /*    medicineInfoDB = MedicineInfoDB.getInstance(this);   // 약 정보 디비
-        List<MedicineInfo> medicineInfos = medicineInfoDB.medicineInfoDao().getAll();
-        System.out.println("medicineInfos = " + medicineInfos);*/
+        medicineInfoDB = MedicineInfoDB.getInstance(this);   // 약 정보 디비
+        List<Integer> medicineInfos = medicineInfoDB.medicineInfoDao().getIdAll();
+        System.out.println("medicineInfos = " + medicineInfos);
 
         ListView mList = (ListView) findViewById(R.id.medicineList);    // 리스트 뷰
         List<String> list = new ArrayList<>();                          // 리스트 뷰에서 사용할 리스트

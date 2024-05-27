@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Medicine.class}, version = 100)
+@Database(entities = {Medicine.class}, version = 1)
 public abstract class MedicineDB extends RoomDatabase {
     private static MedicineDB INSTANCE = null; // 객체는 하나만 생성
     public abstract MedicineDao medicineDao();
@@ -17,6 +17,7 @@ public abstract class MedicineDB extends RoomDatabase {
             INSTANCE = Room.databaseBuilder(context, MedicineDB.class , "medicine.db")
                     .fallbackToDestructiveMigration()   // 스키마(DB) 버전 변경 가능
                     .allowMainThreadQueries()           // Main Thread에서 IO(입출력) 가능하게 함
+                    .createFromAsset("medicine.db")
                     .build();
         }
         return  INSTANCE;

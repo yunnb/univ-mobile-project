@@ -16,6 +16,7 @@ public abstract class MedicineInfoDB extends RoomDatabase {
             INSTANCE = Room.databaseBuilder(context, MedicineInfoDB.class , "medicineInfo.db")
                     .fallbackToDestructiveMigration()   // 스키마(DB) 버전 변경 가능
                     .allowMainThreadQueries()           // Main Thread에서 IO(입출력) 가능하게 함
+                    .createFromAsset("medicineInfo.db")
                     .build();
         }
         return  INSTANCE;
