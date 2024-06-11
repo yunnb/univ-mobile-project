@@ -1,29 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/menu_home"
+        android:title="홈" />
+    <item
         android:id="@+id/menu_news"
-        android:enabled="true"
         android:title="소식" />
-
     <item
         android:id="@+id/menu_category"
-        android:enabled="true"
         android:title="카테고리" />
-
-    <item
-        android:id="@+id/menu_home"
-        android:enabled="true"
-        android:title="홈" />
-
     <item
         android:id="@+id/menu_diary"
-        android:enabled="true"
         android:title="일지" />
-
     <item
-        android:id="@+id/menu_interest"
-        android:enabled="true"
-        android:title="관심" />
-
-
+        android:id="@+id/menu_my"
+        android:title="나" />
 </menu>

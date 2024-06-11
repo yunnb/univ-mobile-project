@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
-        android:requestLegacyExternalStorage="true"
-
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -26,6 +25,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MedicineInfo"></activity>
+        <activity android:name=".HomeFragment"/>
+        <activity android:name=".NewsFragment"/>
+        <activity android:name=".CategoryFragment"/>
+        <activity android:name=".DiaryFragment"/>
+        <activity android:name=".MyFragment"/>
+        <activity android:name=".DetailActivity"/>
+
     </application>
+
 </manifest>

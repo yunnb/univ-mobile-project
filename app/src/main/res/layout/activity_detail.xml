@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/itemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Item Name"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/chart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chart"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/drugShape"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Drug Shape"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/colorClass1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Color Class"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/className"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Class Name"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/etcOtcName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Etc Otc Name"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/formCodeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Form Code Name"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/validTerm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Valid Term"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/eeDocData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EE Doc Data"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/udDocData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UD Doc Data"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/nbDocData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NB Doc Data"
+        android:layout_marginBottom="8dp" />
+
+</LinearLayout>
