@@ -1,87 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/itemName"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Item Name"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp" />
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/chart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chart"
-        android:layout_marginBottom="8dp" />
+        <TextView
+            android:id="@+id/itemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Item Name"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_marginBottom="13dp" />
 
-    <TextView
-        android:id="@+id/drugShape"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Drug Shape"
-        android:layout_marginBottom="8dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginBottom="13dp"/>
 
-    <TextView
-        android:id="@+id/colorClass1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Color Class"
-        android:layout_marginBottom="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chart"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
 
-    <TextView
-        android:id="@+id/className"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Class Name"
-        android:layout_marginBottom="8dp" />
+        <TextView
+            android:id="@+id/chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_marginBottom="13dp" />
 
-    <TextView
-        android:id="@+id/etcOtcName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Etc Otc Name"
-        android:layout_marginBottom="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Drug Shape"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
 
-    <TextView
-        android:id="@+id/formCodeName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Form Code Name"
-        android:layout_marginBottom="8dp" />
+        <TextView
+            android:id="@+id/drugShape"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_marginBottom="13dp" />
 
-    <TextView
-        android:id="@+id/validTerm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Valid Term"
-        android:layout_marginBottom="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Color Class"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
 
-    <TextView
-        android:id="@+id/eeDocData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="EE Doc Data"
-        android:layout_marginBottom="8dp" />
+        <TextView
+            android:id="@+id/colorClass1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_marginBottom="13dp" />
 
-    <TextView
-        android:id="@+id/udDocData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="UD Doc Data"
-        android:layout_marginBottom="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Class Name"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
 
-    <TextView
-        android:id="@+id/nbDocData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="NB Doc Data"
-        android:layout_marginBottom="8dp" />
+        <TextView
+            android:id="@+id/className"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_marginBottom="13dp" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/etcOtcNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Etc Otc Name"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/etcOtcName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_marginBottom="13dp" />
+
+        <TextView
+            android:id="@+id/formCodeNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Form Code Name"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/formCodeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_marginBottom="13dp" />
+
+        <TextView
+            android:id="@+id/validTermLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valid Term"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/validTerm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_marginBottom="13dp" />
+
+        <TextView
+            android:id="@+id/eeDocDataLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EE Doc Data"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/eeDocData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_marginBottom="13dp" />
+
+        <TextView
+            android:id="@+id/udDocDataLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UD Doc Data"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/udDocData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_marginBottom="13dp" />
+
+        <TextView
+            android:id="@+id/nbDocDataLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NB Doc Data"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/nbDocData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_marginBottom="13dp" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_home"
-        android:title="홈" />
-    <item
         android:id="@+id/menu_news"
         android:title="소식" />
     <item
         android:id="@+id/menu_category"
         android:title="카테고리" />
     <item
+        android:id="@+id/menu_home"
+        android:title="홈" />
+    <item
         android:id="@+id/menu_diary"
         android:title="일지" />
     <item
         android:id="@+id/menu_my"
-        android:title="나" />
+        android:title="알람" />
 </menu>

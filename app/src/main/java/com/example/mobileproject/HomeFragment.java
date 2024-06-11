@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment {
         searchMedicine();
 
         editText = view.findViewById(R.id.edit);
-        searchButton = view.findViewById(R.id.button);
+        searchButton = view.findViewById(R.id.searchBtn);
         listView = view.findViewById(R.id.list_view);
 
         medicines = new ArrayList<>();
