@@ -31,6 +31,8 @@
         <activity android:name=".DiaryFragment"/>
         <activity android:name=".MyFragment"/>
         <activity android:name=".DetailActivity"/>
+        <activity android:name=".SearchResultsActivity" />
+
 
     </application>
 

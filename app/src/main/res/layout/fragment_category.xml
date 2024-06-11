@@ -1,6 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="의약품 종류"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:padding="8dp"
+        android:useDefaultMargins="true">
+
+        <CheckBox
+            android:id="@+id/checkbox_etc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전문의약품" />
+
+        <CheckBox
+            android:id="@+id/checkbox_otc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="일반의약품" />
+
+    </GridLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="모양"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        android:rowCount="3"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp"
+        android:useDefaultMargins="true">
+
+        <CheckBox
+            android:id="@+id/checkbox_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="원형" />
+
+        <CheckBox
+            android:id="@+id/checkbox_oval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="타원형" />
+
+        <CheckBox
+            android:id="@+id/checkbox_rectangular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="장방형" />
+
+        <CheckBox
+            android:id="@+id/checkbox_semi_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="반원형" />
+
+        <CheckBox
+            android:id="@+id/checkbox_diamond"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="마름모" />
+
+        <CheckBox
+            android:id="@+id/checkbox_triangle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="삼각형" />
+
+        <CheckBox
+            android:id="@+id/checkbox_square"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="사각형" />
+
+        <CheckBox
+            android:id="@+id/checkbox_pentagon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오각형" />
+
+        <CheckBox
+            android:id="@+id/checkbox_hexagon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="육각형" />
+
+        <CheckBox
+            android:id="@+id/checkbox_octagon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="팔각형" />
+
+        <CheckBox
+            android:id="@+id/checkbox_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="기타" />
+
+    </GridLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="색상"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        android:padding="8dp"
+        android:useDefaultMargins="true">
+
+        <CheckBox
+            android:id="@+id/checkbox_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="하양" />
+
+        <CheckBox
+            android:id="@+id/checkbox_red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="빨강" />
+
+        <CheckBox
+            android:id="@+id/checkbox_yellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="노랑" />
+
+        <CheckBox
+            android:id="@+id/checkbox_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="초록" />
+
+        <CheckBox
+            android:id="@+id/checkbox_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="파랑" />
+
+        <CheckBox
+            android:id="@+id/checkbox_other_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="기타" />
+
+    </GridLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/categoryBtn"
+        android:layout_gravity="center"
+        android:text="검색"
+        />
+</LinearLayout>

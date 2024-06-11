@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class Medicine implements Serializable {
     private String itemSeq;
-    private String itemName;
-    private String chart;
-    private String drugShape;
-    private String colorClass1;
-    private String className;
-    private String etcOtcName;
-    private String formCodeName;
+    private String itemName;    // 가스디알
+    private String chart;       // 녹색의 원형 필름코팅정
+    private String drugShape;   // 원형
+    private String colorClass;  // 연두
+    private String className;   // 기타의 소화기관용약
+    private String etcOtcName;  // 전문의약품
+    private String formCodeName;    // 당의정, 필름코팅정
     private String validTerm;
     private String eeDocData;
     private String udDocData;
@@ -30,8 +30,8 @@ public class Medicine implements Serializable {
     public String getDrugShape() { return drugShape; }
     public void setDrugShape(String drugShape) { this.drugShape = drugShape; }
 
-    public String getColorClass() { return colorClass1; }
-    public void setColorClass(String colorClass1) { this.colorClass1 = colorClass1; }
+    public String getColorClass() { return colorClass; }
+    public void setColorClass(String colorClass1) { this.colorClass = colorClass1; }
 
     public String getClassName() { return className; }
     public void setClassName(String className) { this.className = className; }
