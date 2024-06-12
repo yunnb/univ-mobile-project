@@ -1,49 +1,26 @@
 package com.example.mobileproject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryFragment extends Fragment {
-
-    private List<Medicine> medicines;
-    private CheckBox checkboxEtc;
-    private CheckBox checkboxOtc;
-    private CheckBox checkboxCircle;
-    private CheckBox checkboxOval;
-    private CheckBox checkboxRectangular;
-    private CheckBox checkboxSemiCircle;
-    private CheckBox checkboxDiamond;
-    private CheckBox checkboxTriangle;
-    private CheckBox checkboxSquare;
-    private CheckBox checkboxPentagon;
-    private CheckBox checkboxHexagon;
-    private CheckBox checkboxOctagon;
-    private CheckBox checkboxOther;
-    private CheckBox checkboxWhite;
-    private CheckBox checkboxRed;
-    private CheckBox checkboxYellow;
-    private CheckBox checkboxGreen;
-    private CheckBox checkboxBlue;
-    private CheckBox checkboxOtherColor;
+    private CheckBox checkboxCircle, checkboxOval, checkboxRectangular, checkboxSemiCircle, checkboxDiamond, checkboxTriangle, checkboxSquare, checkboxPentagon, checkboxHexagon, checkboxOctagon, checkboxOther;
+    private CheckBox checkboxWhite, checkboxRed, checkboxYellow, checkboxGreen, checkboxBlue, checkboxOtherColor;
+    private CheckBox checkboxEtc, checkboxOtc;
     private Button searchButton;
 
     @Nullable
@@ -51,9 +28,6 @@ public class CategoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category, container, false);
 
-        // Initialize checkboxes
-        checkboxEtc = view.findViewById(R.id.checkbox_etc);
-        checkboxOtc = view.findViewById(R.id.checkbox_otc);
         checkboxCircle = view.findViewById(R.id.checkbox_circle);
         checkboxOval = view.findViewById(R.id.checkbox_oval);
         checkboxRectangular = view.findViewById(R.id.checkbox_rectangular);
@@ -65,181 +39,97 @@ public class CategoryFragment extends Fragment {
         checkboxHexagon = view.findViewById(R.id.checkbox_hexagon);
         checkboxOctagon = view.findViewById(R.id.checkbox_octagon);
         checkboxOther = view.findViewById(R.id.checkbox_other);
+
         checkboxWhite = view.findViewById(R.id.checkbox_white);
         checkboxRed = view.findViewById(R.id.checkbox_red);
         checkboxYellow = view.findViewById(R.id.checkbox_yellow);
         checkboxGreen = view.findViewById(R.id.checkbox_green);
         checkboxBlue = view.findViewById(R.id.checkbox_blue);
         checkboxOtherColor = view.findViewById(R.id.checkbox_other_color);
+
+        checkboxEtc = view.findViewById(R.id.checkbox_etc);
+        checkboxOtc = view.findViewById(R.id.checkbox_otc);
+
         searchButton = view.findViewById(R.id.categoryBtn);
-
-        // Initialize the medicine list
-        medicines = new ArrayList<>();
-
-        // Set up search button click listener
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchMedicine();
+                if (!anyCheckboxChecked()) {
+                    Toast.makeText(getContext(), "체크박스를 선택하세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // 필터링된 약 리스트 생성
+                List<Medicine> filteredMedicines = filterMedicines();
+                if (filteredMedicines.isEmpty()) {
+                    Toast.makeText(getContext(), "해당 조건에 맞는 약이 없습니다", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // 검색 결과 화면으로 이동
+                Intent intent = new Intent(getActivity(), SearchResultsActivity.class);
+                ArrayList<String> medicineNames = new ArrayList<>();
+                for (Medicine med : filteredMedicines) {
+                    medicineNames.add(med.getItemName());
+                }
+                intent.putStringArrayListExtra("medicineNames", medicineNames);
+                intent.putExtra("medicines", new ArrayList<>(filteredMedicines));
+                startActivity(intent);
             }
         });
 
         return view;
     }
 
-    private void searchMedicine() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<Medicine> result = fetchMedicines();
-                ArrayList<String> medicineNames = new ArrayList<>();
-                for (Medicine med : result) {
-                    medicineNames.add(med.getItemName());
-                }
-
-                Log.d("CategoryFragment", "Medicine Names: " + medicineNames);
-
-                // Start the SearchResultsActivity with the filtered medicine names and medicine objects
-                Intent intent = new Intent(getActivity(), SearchResultsActivity.class);
-                intent.putStringArrayListExtra("medicineNames", medicineNames);
-                intent.putExtra("medicines", new ArrayList<>(result)); // Pass the medicine objects
-                startActivity(intent);
-            }
-        }).start();
+    private boolean anyCheckboxChecked() {
+        return checkboxCircle.isChecked() || checkboxOval.isChecked() || checkboxRectangular.isChecked() || checkboxSemiCircle.isChecked() ||
+                checkboxDiamond.isChecked() || checkboxTriangle.isChecked() || checkboxSquare.isChecked() || checkboxPentagon.isChecked() ||
+                checkboxHexagon.isChecked() || checkboxOctagon.isChecked() || checkboxOther.isChecked() ||
+                checkboxWhite.isChecked() || checkboxRed.isChecked() || checkboxYellow.isChecked() || checkboxGreen.isChecked() ||
+                checkboxBlue.isChecked() || checkboxOtherColor.isChecked() ||
+                checkboxEtc.isChecked() || checkboxOtc.isChecked();
     }
 
-    private List<Medicine> fetchMedicines() {
-        List<Medicine> resultList = new ArrayList<>();
-        try {
-            String serviceKey = "%2Bw%2Fg7mULHBT87Ex0nvqurAjT%2FPHyQ80zN%2BPic6VLF9JCiZJmzpdH6ezn308hRgfiRtayw9lAxh2Luw2CZpg%2F6g%3D%3D";
-            String queryUrl = "https://apis.data.go.kr/1471000/MdcinGrnIdntfcInfoService01/getMdcinGrnIdntfcInfoList01?serviceKey=" + serviceKey + "&numOfRows=40&pageNo=1&type=xml";
+    private List<Medicine> filterMedicines() {
+        List<Medicine> allMedicines = HomeFragment.getAllMedicines(); // HomeFragment에서 모든 약 정보를 가져옴
+        List<Medicine> filteredMedicines = new ArrayList<>();
 
-            URL url = new URL(queryUrl);
-            InputStream is = url.openStream();
-
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            XmlPullParser xpp = factory.newPullParser();
-            xpp.setInput(new InputStreamReader(is, "UTF-8"));
-
-            int eventType = xpp.getEventType();
-            Medicine medicine = null;
-
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                switch (eventType) {
-                    case XmlPullParser.START_TAG:
-                        String tag = xpp.getName();
-                        if (tag.equals("item")) {
-                            medicine = new Medicine();
-                        } else if (medicine != null) {
-                            if (tag.equals("ITEM_SEQ")) {
-                                xpp.next();
-                                medicine.setItemSeq(xpp.getText());
-                            } else if (tag.equals("ITEM_NAME")) {
-                                xpp.next();
-                                medicine.setItemName(xpp.getText());
-                            } else if (tag.equals("CHART")) {
-                                xpp.next();
-                                medicine.setChart(xpp.getText());
-                            } else if (tag.equals("DRUG_SHAPE")) {
-                                xpp.next();
-                                medicine.setDrugShape(xpp.getText());
-                                Log.d("CategoryFragment", "Drug Shape: " + xpp.getText());
-                            } else if (tag.equals("COLOR_CLASS1")) {
-                                xpp.next();
-                                medicine.setColorClass(xpp.getText());
-                                Log.d("CategoryFragment", "Color Class: " + xpp.getText());
-                            } else if (tag.equals("CLASS_NAME")) {
-                                xpp.next();
-                                medicine.setClassName(xpp.getText());
-                            } else if (tag.equals("ETC_OTC_NAME")) {
-                                xpp.next();
-                                medicine.setEtcOtcName(xpp.getText());
-                            } else if (tag.equals("FORM_CODE_NAME")) {
-                                xpp.next();
-                                medicine.setFormCodeName(xpp.getText());
-                            }
-                        }
-                        break;
-
-                    case XmlPullParser.END_TAG:
-                        if (xpp.getName().equals("item") && medicine != null) {
-                            resultList.add(medicine);
-                            medicine = null;
-                        }
-                        break;
-                }
-                eventType = xpp.next();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Filter results based on selected checkboxes
-        resultList = filterMedicines(resultList);
-
-        return resultList;
-    }
-
-    private List<Medicine> filterMedicines(List<Medicine> medicines) {
-        List<Medicine> filteredList = new ArrayList<>();
-
-        for (Medicine medicine : medicines) {
-            boolean matchesType = checkboxEtc.isChecked() && "전문의약품".equals(medicine.getEtcOtcName()) ||
-                    checkboxOtc.isChecked() && "일반의약품".equals(medicine.getEtcOtcName());
-
-            boolean matchesShape = checkboxCircle.isChecked() && "원형".equals(medicine.getDrugShape()) ||
-                    checkboxOval.isChecked() && "타원형".equals(medicine.getDrugShape()) ||
-                    checkboxRectangular.isChecked() && "장방형".equals(medicine.getDrugShape()) ||
-                    checkboxSemiCircle.isChecked() && "반원형".equals(medicine.getDrugShape()) ||
-                    checkboxDiamond.isChecked() && "마름모".equals(medicine.getDrugShape()) ||
-                    checkboxTriangle.isChecked() && "삼각형".equals(medicine.getDrugShape()) ||
-                    checkboxSquare.isChecked() && "사각형".equals(medicine.getDrugShape()) ||
-                    checkboxPentagon.isChecked() && "오각형".equals(medicine.getDrugShape()) ||
-                    checkboxHexagon.isChecked() && "육각형".equals(medicine.getDrugShape()) ||
-                    checkboxOctagon.isChecked() && "팔각형".equals(medicine.getDrugShape()) ||
-                    checkboxOther.isChecked() && "기타".equals(medicine.getDrugShape());
-
-            boolean matchesColor = checkboxWhite.isChecked() && isWhiteColor(medicine.getColorClass()) ||
-                    checkboxRed.isChecked() && isRedColor(medicine.getColorClass()) ||
-                    checkboxYellow.isChecked() && isYellowColor(medicine.getColorClass()) ||
-                    checkboxGreen.isChecked() && isGreenColor(medicine.getColorClass()) ||
-                    checkboxBlue.isChecked() && isBlueColor(medicine.getColorClass()) ||
-                    checkboxOtherColor.isChecked() && isOtherColor(medicine.getColorClass());
-
-            Log.d("CategoryFragment", "DrugShape: " + medicine.getDrugShape() + ", ColorClass: " + medicine.getColorClass());
-            Log.d("CategoryFragment", "matchesType: " + matchesType + ", matchesShape: " + matchesShape + ", matchesColor: " + matchesColor);
-
-            if (matchesType || matchesShape || matchesColor) {
-                filteredList.add(medicine);
+        for (Medicine medicine : allMedicines) {
+            if (matchesFilters(medicine)) {
+                filteredMedicines.add(medicine);
             }
         }
 
-        Log.d("CategoryFragment", "Filtered Medicines: " + filteredList);
-
-        return filteredList;
+        return filteredMedicines;
     }
 
-    private boolean isWhiteColor(String colorClass) {
-        return "하양".equals(colorClass) || "투명".equals(colorClass);
-    }
+    private boolean matchesFilters(Medicine medicine) {
+        // 여기서 medicine 객체의 필드를 체크박스 상태와 비교하여 필터링 로직을 구현
+        // 예제: 모양 필터링
+        boolean shapeMatches = (checkboxCircle.isChecked() && medicine.getDrugShape().equals("원형")) ||
+                (checkboxOval.isChecked() && medicine.getDrugShape().equals("타원형")) ||
+                (checkboxRectangular.isChecked() && medicine.getDrugShape().equals("사각형")) ||
+                (checkboxSemiCircle.isChecked() && medicine.getDrugShape().equals("반원형")) ||
+                (checkboxDiamond.isChecked() && medicine.getDrugShape().equals("마름모형")) ||
+                (checkboxTriangle.isChecked() && medicine.getDrugShape().equals("삼각형")) ||
+                (checkboxSquare.isChecked() && medicine.getDrugShape().equals("정사각형")) ||
+                (checkboxPentagon.isChecked() && medicine.getDrugShape().equals("오각형")) ||
+                (checkboxHexagon.isChecked() && medicine.getDrugShape().equals("육각형")) ||
+                (checkboxOctagon.isChecked() && medicine.getDrugShape().equals("팔각형")) ||
+                (checkboxOther.isChecked() && medicine.getDrugShape().equals("기타"));
 
-    private boolean isRedColor(String colorClass) {
-        return "분홍".equals(colorClass) || "빨강".equals(colorClass) || "자주".equals(colorClass);
-    }
+        // 색상 필터링
+        boolean colorMatches = (checkboxWhite.isChecked() && medicine.getColorClass().equals("흰색")) ||
+                (checkboxRed.isChecked() && medicine.getColorClass().equals("빨강")) ||
+                (checkboxYellow.isChecked() && medicine.getColorClass().equals("노랑")) ||
+                (checkboxGreen.isChecked() && medicine.getColorClass().equals("초록")) ||
+                (checkboxBlue.isChecked() && medicine.getColorClass().equals("파랑")) ||
+                (checkboxOtherColor.isChecked() && medicine.getColorClass().equals("기타"));
 
-    private boolean isYellowColor(String colorClass) {
-        return "노랑".equals(colorClass) || "주황".equals(colorClass);
-    }
+        // 기타 조건 필터링
+        boolean etcMatches = (checkboxEtc.isChecked() && medicine.getEtcOtcName().equals("전문의약품"));
+        boolean otcMatches = (checkboxOtc.isChecked() && medicine.getEtcOtcName().equals("일반의약품"));
 
-    private boolean isGreenColor(String colorClass) {
-        return "연두".equals(colorClass) || "초록".equals(colorClass) || "청록".equals(colorClass);
-    }
-
-    private boolean isBlueColor(String colorClass) {
-        return "파랑".equals(colorClass) || "남색".equals(colorClass) || "보라".equals(colorClass);
-    }
-
-    private boolean isOtherColor(String colorClass) {
-        return "갈색".equals(colorClass) || "회색".equals(colorClass) || "검정".equals(colorClass);
+        return shapeMatches && colorMatches && (etcMatches || otcMatches);
     }
 }

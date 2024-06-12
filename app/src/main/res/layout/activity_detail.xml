@@ -9,14 +9,33 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/itemName"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Item Name"
-            android:textStyle="bold"
-            android:textSize="22sp"
-            android:layout_marginBottom="13dp" />
+            android:layout_marginBottom="13dp">
+
+            <TextView
+                android:id="@+id/itemName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/favorite_button"
+                android:layout_toLeftOf="@id/favorite_button"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:text="Item Name"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp" />
+
+            <Button
+                android:id="@+id/favorite_button"
+                android:layout_width="150px"
+                android:layout_height="wrap_content"
+                android:text="☆"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
@@ -27,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chart"
+            android:text="성상"
             android:textStyle="bold"
             android:textSize="16sp"
             android:layout_marginBottom="4dp" />
@@ -36,13 +55,13 @@
             android:id="@+id/chart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:layout_marginBottom="13dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Drug Shape"
+            android:text="의약품 모양"
             android:textStyle="bold"
             android:textSize="16sp"
             android:layout_marginBottom="4dp" />
@@ -51,13 +70,13 @@
             android:id="@+id/drugShape"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:layout_marginBottom="13dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Color Class"
+            android:text="색깔"
             android:textStyle="bold"
             android:textSize="16sp"
             android:layout_marginBottom="4dp" />
@@ -66,13 +85,13 @@
             android:id="@+id/colorClass1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:layout_marginBottom="13dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Class Name"
+            android:text="분류명"
             android:textStyle="bold"
             android:textSize="16sp"
             android:layout_marginBottom="4dp" />
@@ -81,14 +100,14 @@
             android:id="@+id/className"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:layout_marginBottom="13dp" />
 
         <TextView
             android:id="@+id/etcOtcNameLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Etc Otc Name"
+            android:text="전문/일반"
             android:textStyle="bold"
             android:textSize="16sp"
             android:layout_marginBottom="4dp" />
@@ -97,14 +116,14 @@
             android:id="@+id/etcOtcName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:layout_marginBottom="13dp" />
 
         <TextView
             android:id="@+id/formCodeNameLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Form Code Name"
+            android:text="제형 코드 이름"
             android:textStyle="bold"
             android:textSize="16sp"
             android:layout_marginBottom="4dp" />
@@ -113,7 +132,7 @@
             android:id="@+id/formCodeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:layout_marginBottom="13dp" />
 
         <TextView
@@ -129,7 +148,7 @@
             android:id="@+id/validTerm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:layout_marginBottom="13dp" />
 
         <TextView
@@ -145,7 +164,7 @@
             android:id="@+id/eeDocData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:layout_marginBottom="13dp" />
 
         <TextView
@@ -161,7 +180,7 @@
             android:id="@+id/udDocData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:layout_marginBottom="13dp" />
 
         <TextView
@@ -177,7 +196,7 @@
             android:id="@+id/nbDocData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:layout_marginBottom="13dp" />
 
     </LinearLayout>

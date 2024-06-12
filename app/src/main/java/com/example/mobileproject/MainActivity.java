@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (itemId == R.id.menu_diary) {
                     selectedFragment = new DiaryFragment();
                 } else if (itemId == R.id.menu_my) {
-                    selectedFragment = new MyFragment();
+                    selectedFragment = new AlarmFragment();
                 }
 
                 if (selectedFragment != null) {

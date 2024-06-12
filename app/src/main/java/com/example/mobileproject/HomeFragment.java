@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -24,29 +23,30 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
     private EditText editText;
     private Button searchButton;
     private ListView listView;
-    private ArrayAdapter<String> adapter;
+    private MedicineAdapter adapter;
     private List<Medicine> medicines;
+    private static Map<String, Medicine> medicineMap = new HashMap<>(); // 추가된 부분
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        searchMedicine();
-
         editText = view.findViewById(R.id.edit);
         searchButton = view.findViewById(R.id.searchBtn);
         listView = view.findViewById(R.id.list_view);
 
         medicines = new ArrayList<>();
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>());
+        adapter = new MedicineAdapter(getActivity(), medicines);
         listView.setAdapter(adapter);
 
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +66,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        searchMedicine();
+
         return view;
     }
 
@@ -76,12 +78,6 @@ public class HomeFragment extends Fragment {
             getActivity().runOnUiThread(() -> {
                 medicines.clear();
                 medicines.addAll(result);
-                List<String> medicineNames = new ArrayList<>();
-                for (Medicine med : result) {
-                    medicineNames.add(med.getItemName());
-                }
-                adapter.clear();
-                adapter.addAll(medicineNames);
                 adapter.notifyDataSetChanged();
             });
         }).start();
@@ -142,6 +138,7 @@ public class HomeFragment extends Fragment {
                     case XmlPullParser.END_TAG:
                         if (xpp.getName().equals("item") && medicine != null) {
                             resultList.add(medicine);
+                            medicineMap.put(medicine.getItemSeq(), medicine); // 추가된 부분
                             medicine = null;
                         }
                         break;
@@ -152,73 +149,14 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
         }
 
-        // 여기서 두 번째 API 연동을 시도합니다.
-        for (Medicine med : resultList) {
-            //fetchAdditionalMedicineInfo(med);
-        }
-
         return resultList;
     }
 
-    private void fetchAdditionalMedicineInfo(Medicine medicine) {
-        String serviceKey = "%2Bw%2Fg7mULHBT87Ex0nvqurAjT%2FPHyQ80zN%2BPic6VLF9JCiZJmzpdH6ezn308hRgfiRtayw9lAxh2Luw2CZpg%2F6g%3D%3D";
-        String queryUrl2 = "https://apis.data.go.kr/1471000/DrugPrdtPrmsnInfoService05/getDrugPrdtPrmsnDtlInq04?serviceKey=" + serviceKey + "&item_seq=" + medicine.getItemSeq();
+    public static List<Medicine> getAllMedicines() {
+        return new ArrayList<>(medicineMap.values());
+    }
 
-        try {
-            URL url = new URL(queryUrl2);
-            InputStream is = url.openStream();
-
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            XmlPullParser xpp = factory.newPullParser();
-            xpp.setInput(new InputStreamReader(is, "UTF-8"));
-
-            int eventType = xpp.getEventType();
-            StringBuilder eeDocData = new StringBuilder();
-            StringBuilder udDocData = new StringBuilder();
-            StringBuilder nbDocData = new StringBuilder();
-            String currentTag = "";
-            String currentDocType = "";
-
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                switch (eventType) {
-                    case XmlPullParser.START_TAG:
-                        currentTag = xpp.getName();
-                        if (currentTag.equals("DOC")) {
-                            currentDocType = xpp.getAttributeValue(null, "type");
-                        }
-                        break;
-                    case XmlPullParser.TEXT:
-                        if ("VALID_TERM".equals(currentTag)) {
-                            medicine.setValidTerm(xpp.getText());
-                            Log.d("API Fetch", "Valid Term: " + xpp.getText());
-                        } else if ("PARAGRAPH".equals(currentTag)) {
-                            if ("EE".equals(currentDocType)) {
-                                eeDocData.append(xpp.getText());
-                                Log.d("API Fetch", "EE Doc Data: " + xpp.getText());
-                            } else if ("UD".equals(currentDocType)) {
-                                udDocData.append(xpp.getText());
-                                Log.d("API Fetch", "UD Doc Data: " + xpp.getText());
-                            } else if ("NB".equals(currentDocType)) {
-                                nbDocData.append(xpp.getText());
-                                Log.d("API Fetch", "NB Doc Data: " + xpp.getText());
-                            }
-                        }
-                        break;
-                    case XmlPullParser.END_TAG:
-                        if (xpp.getName().equals("DOC")) {
-                            currentDocType = "";
-                        }
-                        currentTag = "";
-                        break;
-                }
-                eventType = xpp.next();
-            }
-            medicine.setEeDocData(eeDocData.toString());
-            medicine.setUdDocData(udDocData.toString());
-            medicine.setNbDocData(nbDocData.toString());
-            is.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static Medicine findMedicineByItemSeq(String itemSeq) {
+        return medicineMap.get(itemSeq);
     }
 }

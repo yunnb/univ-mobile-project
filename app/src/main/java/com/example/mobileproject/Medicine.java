@@ -16,6 +16,26 @@ public class Medicine implements Serializable {
     private String udDocData;
     private String nbDocData;
 
+    public Medicine() {
+    }
+
+    public Medicine(String itemSeq, String itemName, String chart, String drugShape, String colorClass,
+                    String className, String etcOtcName, String formCodeName, String validTerm,
+                    String eeDocData, String udDocData, String nbDocData) {
+        this.itemSeq = itemSeq;
+        this.itemName = itemName;
+        this.chart = chart;
+        this.drugShape = drugShape;
+        this.colorClass = colorClass;
+        this.className = className;
+        this.etcOtcName = etcOtcName;
+        this.formCodeName = formCodeName;
+        this.validTerm = validTerm;
+        this.eeDocData = eeDocData;
+        this.udDocData = udDocData;
+        this.nbDocData = nbDocData;
+    }
+
     // Getters and Setters
 
     public String getItemSeq() { return itemSeq; }
@@ -31,7 +51,7 @@ public class Medicine implements Serializable {
     public void setDrugShape(String drugShape) { this.drugShape = drugShape; }
 
     public String getColorClass() { return colorClass; }
-    public void setColorClass(String colorClass1) { this.colorClass = colorClass1; }
+    public void setColorClass(String colorClass) { this.colorClass = colorClass; }
 
     public String getClassName() { return className; }
     public void setClassName(String className) { this.className = className; }

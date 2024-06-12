@@ -1,9 +1,12 @@
+// AlarmFragment.java
+
 package com.example.mobileproject;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,31 +23,45 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
-public class MyFragment extends Fragment {
+public class AlarmFragment extends Fragment {
 
     private TimePicker timePicker;
     private Button setAlarmButton;
+    private Button selectMedicineButton;
+    private TextView selectedMedicineText;
     private ListView alarmListView;
     private ArrayList<Alarm> alarmList;
     private AlarmAdapter alarmAdapter;
+    private Medicine selectedMedicine;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my, container, false);
+        View view = inflater.inflate(R.layout.fragment_alarm, container, false);
 
         timePicker = view.findViewById(R.id.time_picker);
         setAlarmButton = view.findViewById(R.id.set_alarm_button);
+        selectMedicineButton = view.findViewById(R.id.select_medicine_button);
+        selectedMedicineText = view.findViewById(R.id.selected_medicine_text);
         alarmListView = view.findViewById(R.id.alarm_list_view);
 
         alarmList = new ArrayList<>();
         alarmAdapter = new AlarmAdapter(getContext(), alarmList);
         alarmListView.setAdapter(alarmAdapter);
+
+        selectMedicineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMedicineSelectionDialog();
+            }
+        });
 
         setAlarmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +71,30 @@ public class MyFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void showMedicineSelectionDialog() {
+        List<Medicine> favoriteMedicines = FavoriteManager.getFavorites(getContext());
+        if (favoriteMedicines.isEmpty()) {
+            Toast.makeText(getContext(), "즐겨찾기된 약이 없습니다", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String[] medicineNames = new String[favoriteMedicines.size()];
+        for (int i = 0; i < favoriteMedicines.size(); i++) {
+            medicineNames[i] = favoriteMedicines.get(i).getItemName();
+        }
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("약 선택")
+                .setItems(medicineNames, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectedMedicine = favoriteMedicines.get(which);
+                        selectedMedicineText.setText("선택된 약: " + selectedMedicine.getItemName());
+                    }
+                })
+                .show();
     }
 
     private void setAlarm() {
@@ -66,13 +107,16 @@ public class MyFragment extends Fragment {
 
         AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getContext(), AlarmReceiver.class);
+        if (selectedMedicine != null) {
+            intent.putExtra("medicine_name", selectedMedicine.getItemName());
+        }
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), alarmList.size(), intent, PendingIntent.FLAG_IMMUTABLE);
 
         if (alarmManager != null) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
             Toast.makeText(getContext(), "알람이 설정되었습니다", Toast.LENGTH_SHORT).show();
 
-            Alarm alarm = new Alarm(hour, minute, true, alarmList.size());
+            Alarm alarm = new Alarm(hour, minute, true, alarmList.size(), selectedMedicine != null ? selectedMedicine.getItemName() : null);
             alarmList.add(alarm);
             alarmAdapter.notifyDataSetChanged();
         }
@@ -102,6 +146,12 @@ public class MyFragment extends Fragment {
 
             alarmTime.setText(String.format("%02d:%02d", alarm.getHour(), alarm.getMinute()));
             alarmSwitch.setChecked(alarm.isEnabled());
+
+            if (alarm.getMedicineName() != null) {
+                alarmTime.setText(String.format("%02d:%02d - %s", alarm.getHour(), alarm.getMinute(), alarm.getMedicineName()));
+            } else {
+                alarmTime.setText(String.format("%02d:%02d", alarm.getHour(), alarm.getMinute()));
+            }
 
             alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -134,6 +184,9 @@ public class MyFragment extends Fragment {
 
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmReceiver.class);
+            if (alarm.getMedicineName() != null) {
+                intent.putExtra("medicine_name", alarm.getMedicineName());
+            }
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE);
 
             if (alarmManager != null) {
@@ -155,7 +208,12 @@ public class MyFragment extends Fragment {
     public static class AlarmReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Toast.makeText(context, "알람이 울립니다!", Toast.LENGTH_SHORT).show();
+            String medicineName = intent.getStringExtra("medicine_name");
+            if (medicineName != null) {
+                Toast.makeText(context, "알람이 울립니다! 약: " + medicineName, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "알람이 울립니다!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -164,12 +222,14 @@ public class MyFragment extends Fragment {
         private int minute;
         private boolean isEnabled;
         private int requestCode;
+        private String medicineName;
 
-        public Alarm(int hour, int minute, boolean isEnabled, int requestCode) {
+        public Alarm(int hour, int minute, boolean isEnabled, int requestCode, String medicineName) {
             this.hour = hour;
             this.minute = minute;
             this.isEnabled = isEnabled;
             this.requestCode = requestCode;
+            this.medicineName = medicineName;
         }
 
         public int getHour() {
@@ -202,6 +262,14 @@ public class MyFragment extends Fragment {
 
         public void setRequestCode(int requestCode) {
             this.requestCode = requestCode;
+        }
+
+        public String getMedicineName() {
+            return medicineName;
+        }
+
+        public void setMedicineName(String medicineName) {
+            this.medicineName = medicineName;
         }
     }
 }
