@@ -37,14 +37,23 @@ public class MedicineDetailActivity extends AppCompatActivity {
         etcOtcNameText.setText(medicine.getEtcOtcName());
         formCodeNameText.setText(medicine.getFormCodeName());
 
+        updateFavoriteBtn();
+
         favoriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { updateFavorite(); }
-
+            public void onClick(View v) {
+                clickFavorite();
+                updateFavoriteBtn();
+            }
         });
     }
 
-    private void updateFavorite() {
+    private void updateFavoriteBtn() {
+        boolean isFavorite = FavoriteActivity.isFavorite(this, medicine.getItemSeq());
+        favoriteBtn.setText(isFavorite ? "★" : "☆");
+    }
+
+    private void clickFavorite() {
         boolean isFavorite = FavoriteActivity.isFavorite(this, medicine.getItemSeq());
         if (isFavorite) {
             FavoriteActivity.removeFavorite(this, medicine.getItemSeq());
