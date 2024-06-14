@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Medicine selectedMedicine = medicines.get(position); // 선택된 약
-                Intent intent = new Intent(getActivity(), DetailActivity.class); // 상세 페이지로 이동
+                Intent intent = new Intent(getActivity(), MedicineDetailActivity.class); // 상세 페이지로 이동
                 intent.putExtra("medicine", selectedMedicine); // Intent에 약 정보 추가
                 startActivity(intent); // 상세 페이지
             }
@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
         List<Medicine> resultList = new ArrayList<>();
         String encodedQuery = URLEncoder.encode(query);
         String serviceKey = "%2Bw%2Fg7mULHBT87Ex0nvqurAjT%2FPHyQ80zN%2BPic6VLF9JCiZJmzpdH6ezn308hRgfiRtayw9lAxh2Luw2CZpg%2F6g%3D%3D";
-        String queryUrl1 = "https://apis.data.go.kr/1471000/MdcinGrnIdntfcInfoService01/getMdcinGrnIdntfcInfoList01?serviceKey=" + serviceKey + "&numOfRows=40&pageNo=1&type=xml&item_name=" + encodedQuery;
+        String queryUrl1 = "https://apis.data.go.kr/1471000/MdcinGrnIdntfcInfoService01/getMdcinGrnIdntfcInfoList01?serviceKey=" + serviceKey + "&numOfRows=30&pageNo=1&type=xml&item_name=" + encodedQuery;
 
         try { // Open API 파싱
             URL url = new URL(queryUrl1);

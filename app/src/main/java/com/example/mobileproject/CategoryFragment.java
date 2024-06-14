@@ -19,7 +19,7 @@ public class CategoryFragment extends Fragment {
     private CheckBox checkboxCircle, checkboxOval, checkboxRectangular, checkboxSemiCircle, checkboxDiamond, checkboxTriangle, checkboxSquare, checkboxPentagon, checkboxHexagon, checkboxOctagon, checkboxOther;
     private CheckBox checkboxWhite, checkboxRed, checkboxYellow, checkboxGreen, checkboxBlue, checkboxOtherColor;
     private CheckBox checkboxEtc, checkboxOtc;
-    private Button searchButton;
+    private Button searchButton, viewFavoritesButton;
 
     @Nullable
     @Override
@@ -75,6 +75,16 @@ public class CategoryFragment extends Fragment {
             }
         });
 
+        // 즐겨찾기 보기 버튼 초기화 및 클릭 이벤트 설정
+        viewFavoritesButton = view.findViewById(R.id.view_favorites_button);
+        viewFavoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FavoriteActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -109,12 +119,34 @@ public class CategoryFragment extends Fragment {
     // 선택된 색상 체크박스 값을 가져오는 메서드
     private ArrayList<String> getSelectedColors() {
         ArrayList<String> selectedColors = new ArrayList<>();
-        if (checkboxWhite.isChecked()) selectedColors.add("하양");
-        if (checkboxRed.isChecked()) selectedColors.add("빨강");
-        if (checkboxYellow.isChecked()) selectedColors.add("노랑");
-        if (checkboxGreen.isChecked()) selectedColors.add("초록");
-        if (checkboxBlue.isChecked()) selectedColors.add("파랑");
-        if (checkboxOtherColor.isChecked()) selectedColors.add("기타");
+        if (checkboxWhite.isChecked()) {
+            selectedColors.add("하양");
+            selectedColors.add("투명");
+        }
+        if (checkboxRed.isChecked()) {
+            selectedColors.add("분홍");
+            selectedColors.add("빨강");
+            selectedColors.add("자주");
+        }
+        if (checkboxYellow.isChecked()) {
+            selectedColors.add("노랑");
+            selectedColors.add("주황");
+        }
+        if (checkboxGreen.isChecked()) {
+            selectedColors.add("연두");
+            selectedColors.add("초록");
+            selectedColors.add("청록");
+        }
+        if (checkboxBlue.isChecked()) {
+            selectedColors.add("파랑");
+            selectedColors.add("남색");
+            selectedColors.add("보라");
+        }
+        if (checkboxOtherColor.isChecked()) {
+            selectedColors.add("갈색");
+            selectedColors.add("회색");
+            selectedColors.add("검정");
+        }
 
         return selectedColors;
     }

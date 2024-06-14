@@ -29,16 +29,16 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".AlarmFragment$AlarmReceiver"
-            android:exported="false"/>
+        <receiver android:name=".AlarmFragment$AlarmReceiver" android:exported="false"/>
 
         <activity android:name=".HomeFragment"/>
         <activity android:name=".NewsFragment"/>
         <activity android:name=".CategoryFragment"/>
         <activity android:name=".DiaryFragment"/>
         <activity android:name=".AlarmFragment"/>
-        <activity android:name=".DetailActivity"/>
+        <activity android:name=".MedicineDetailActivity"/>
         <activity android:name=".SearchResultsActivity" />
+        <activity android:name=".FavoriteActivity" />
     </application>
 
 </manifest>

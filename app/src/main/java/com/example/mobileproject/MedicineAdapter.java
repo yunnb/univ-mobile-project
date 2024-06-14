@@ -48,7 +48,7 @@ public class MedicineAdapter extends ArrayAdapter<Medicine> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DetailActivity.class);
+                Intent intent = new Intent(context, MedicineDetailActivity.class);
                 intent.putExtra("medicine", medicine);
                 context.startActivity(intent);
             }
@@ -58,17 +58,17 @@ public class MedicineAdapter extends ArrayAdapter<Medicine> {
     }
 
     private void updateFavoriteButton(Button button, Medicine medicine) {
-        boolean isFavorite = FavoriteManager.isFavorite(context, medicine.getItemSeq());
+        boolean isFavorite = FavoriteActivity.isFavorite(context, medicine.getItemSeq());
         button.setText(isFavorite ? "★" : "☆");
     }
 
     private void toggleFavorite(Medicine medicine) {
-        boolean isFavorite = FavoriteManager.isFavorite(context, medicine.getItemSeq());
+        boolean isFavorite = FavoriteActivity.isFavorite(context, medicine.getItemSeq());
         if (isFavorite) {
-            FavoriteManager.removeFavorite(context, medicine.getItemSeq());
+            FavoriteActivity.removeFavorite(context, medicine.getItemSeq());
             Toast.makeText(context, "즐겨찾기에서 제거되었습니다", Toast.LENGTH_SHORT).show();
         } else {
-            FavoriteManager.addFavorite(context, medicine.getItemSeq());
+            FavoriteActivity.addFavorite(context, medicine.getItemSeq());
             Toast.makeText(context, "즐겨찾기에 추가되었습니다", Toast.LENGTH_SHORT).show();
         }
     }

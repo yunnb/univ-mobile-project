@@ -179,4 +179,11 @@
         android:layout_gravity="center"
         android:text="검색"
         />
+
+    <Button
+        android:id="@+id/view_favorites_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="즐겨찾기 항목 보기"
+        android:layout_marginTop="16dp"/>
 </LinearLayout>

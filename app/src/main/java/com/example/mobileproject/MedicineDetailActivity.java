@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class DetailActivity extends AppCompatActivity {
+public class MedicineDetailActivity extends AppCompatActivity {
 
     private Medicine medicine;
     private Button favoriteButton;
@@ -57,17 +57,17 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void updateFavoriteButton() {
-        boolean isFavorite = FavoriteManager.isFavorite(this, medicine.getItemSeq());
+        boolean isFavorite = FavoriteActivity.isFavorite(this, medicine.getItemSeq());
         favoriteButton.setText(isFavorite ? "★" : "☆");
     }
 
     private void toggleFavorite() {
-        boolean isFavorite = FavoriteManager.isFavorite(this, medicine.getItemSeq());
+        boolean isFavorite = FavoriteActivity.isFavorite(this, medicine.getItemSeq());
         if (isFavorite) {
-            FavoriteManager.removeFavorite(this, medicine.getItemSeq());
+            FavoriteActivity.removeFavorite(this, medicine.getItemSeq());
             Toast.makeText(this, "즐겨찾기에서 제거되었습니다", Toast.LENGTH_SHORT).show();
         } else {
-            FavoriteManager.addFavorite(this, medicine.getItemSeq());
+            FavoriteActivity.addFavorite(this, medicine.getItemSeq());
             Toast.makeText(this, "즐겨찾기에 추가되었습니다", Toast.LENGTH_SHORT).show();
         }
     }

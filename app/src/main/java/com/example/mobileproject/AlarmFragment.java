@@ -72,7 +72,7 @@ public class AlarmFragment extends Fragment {
     }
 
     private void showMedicineSelectionDialog() {
-        List<Medicine> favoriteMedicines = FavoriteManager.getFavorites(getContext());
+        List<Medicine> favoriteMedicines = FavoriteActivity.getFavorites(getContext());
         if (favoriteMedicines.isEmpty()) {
             Toast.makeText(getContext(), "즐겨찾기된 약이 없습니다", Toast.LENGTH_SHORT).show();
             return;
