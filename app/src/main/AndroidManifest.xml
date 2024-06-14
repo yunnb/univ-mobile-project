@@ -29,6 +29,9 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".AlarmFragment$AlarmReceiver"
+            android:exported="false"/>
+
         <activity android:name=".HomeFragment"/>
         <activity android:name=".NewsFragment"/>
         <activity android:name=".CategoryFragment"/>

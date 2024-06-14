@@ -15,35 +15,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        BottomNavigationView nav = findViewById(R.id.bottom_navigation);
+        nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment = null;
+                Fragment select = null;
                 int itemId = item.getItemId();
 
-                if (itemId == R.id.menu_home) {
-                    selectedFragment = new HomeFragment();
-                } else if (itemId == R.id.menu_news) {
-                    selectedFragment = new NewsFragment();
-                } else if (itemId == R.id.menu_category) {
-                    selectedFragment = new CategoryFragment();
-                } else if (itemId == R.id.menu_diary) {
-                    selectedFragment = new DiaryFragment();
-                } else if (itemId == R.id.menu_my) {
-                    selectedFragment = new AlarmFragment();
-                }
+                if (itemId == R.id.menu_home) select = new HomeFragment();
+                else if (itemId == R.id.menu_news) select = new NewsFragment();
+                else if (itemId == R.id.menu_category) select = new CategoryFragment();
+                else if (itemId == R.id.menu_diary) select = new DiaryFragment();
+                else if (itemId == R.id.menu_my) select = new AlarmFragment();
 
-                if (selectedFragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-                }
+                if (select != null)
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, select).commit();
+
                 return true;
             }
         });
 
-        // 초기 화면 설정
-        if (savedInstanceState == null) {
-            bottomNavigationView.setSelectedItemId(R.id.menu_home);
-        }
+        if (savedInstanceState == null) nav.setSelectedItemId(R.id.menu_home);
+
     }
 }

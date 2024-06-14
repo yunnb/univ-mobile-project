@@ -2,30 +2,17 @@ package com.example.mobileproject;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.view.*;
+import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.xmlpull.v1.*;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 public class HomeFragment extends Fragment {
 
@@ -34,7 +21,7 @@ public class HomeFragment extends Fragment {
     private ListView listView;
     private MedicineAdapter adapter;
     private List<Medicine> medicines;
-    private static Map<String, Medicine> medicineMap = new HashMap<>(); // 추가된 부분
+    private static Map<String, Medicine> medicineMap = new HashMap<>();
 
     @Nullable
     @Override
@@ -49,47 +36,46 @@ public class HomeFragment extends Fragment {
         adapter = new MedicineAdapter(getActivity(), medicines);
         listView.setAdapter(adapter);
 
+        searchMedicine();
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                searchMedicine();
-            }
+            public void onClick(View v) { searchMedicine(); }
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Medicine selectedMedicine = medicines.get(position);
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra("medicine", selectedMedicine);
-                startActivity(intent);
+                Medicine selectedMedicine = medicines.get(position); // 선택된 약
+                Intent intent = new Intent(getActivity(), DetailActivity.class); // 상세 페이지로 이동
+                intent.putExtra("medicine", selectedMedicine); // Intent에 약 정보 추가
+                startActivity(intent); // 상세 페이지
             }
         });
-
-        searchMedicine();
-
         return view;
     }
 
+    // 약을 검색하는 메서드
+    // 시간이 오래 걸리는 작업은 메인 스레드에서 사용 시 성능 저하
+    // 새 스레드 생성 후 작업
     private void searchMedicine() {
         new Thread(() -> {
-            String query = editText.getText().toString();
-            List<Medicine> result = fetchMedicines(query);
-            getActivity().runOnUiThread(() -> {
-                medicines.clear();
-                medicines.addAll(result);
-                adapter.notifyDataSetChanged();
+            String searchWord = editText.getText().toString(); // EditText 값
+            List<Medicine> result = medicineOpenAPI(searchWord); // 값에 해당하는 약 정보
+            getActivity().runOnUiThread(() -> {  // 출력 작업은 메인 스레드
+                medicines.clear(); // 기존 약 리스트 초기화
+                medicines.addAll(result); // 검색 결과 추가
+                adapter.notifyDataSetChanged(); // 어댑터에 데이터 변경
             });
         }).start();
     }
-
-    private List<Medicine> fetchMedicines(String query) {
+    private List<Medicine> medicineOpenAPI(String query) {
         List<Medicine> resultList = new ArrayList<>();
         String encodedQuery = URLEncoder.encode(query);
         String serviceKey = "%2Bw%2Fg7mULHBT87Ex0nvqurAjT%2FPHyQ80zN%2BPic6VLF9JCiZJmzpdH6ezn308hRgfiRtayw9lAxh2Luw2CZpg%2F6g%3D%3D";
         String queryUrl1 = "https://apis.data.go.kr/1471000/MdcinGrnIdntfcInfoService01/getMdcinGrnIdntfcInfoList01?serviceKey=" + serviceKey + "&numOfRows=40&pageNo=1&type=xml&item_name=" + encodedQuery;
 
-        try {
+        try { // Open API 파싱
             URL url = new URL(queryUrl1);
             InputStream is = url.openStream();
 
@@ -97,16 +83,15 @@ public class HomeFragment extends Fragment {
             XmlPullParser xpp = factory.newPullParser();
             xpp.setInput(new InputStreamReader(is, "UTF-8"));
 
-            int eventType = xpp.getEventType();
-            Medicine medicine = null;
+            int eventType = xpp.getEventType(); // 이벤트 타입
+            Medicine medicine = null; // 현재 처리 중인 약 객체
 
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 switch (eventType) {
-                    case XmlPullParser.START_TAG:
-                        String tag = xpp.getName();
-                        if (tag.equals("item")) {
-                            medicine = new Medicine();
-                        } else if (medicine != null) {
+                    case XmlPullParser.START_TAG: // 시작 태그일 경우
+                        String tag = xpp.getName(); // 태그 이름 가져오기
+                        if (tag.equals("item")) medicine = new Medicine();
+                        else if (medicine != null) {
                             if (tag.equals("ITEM_SEQ")) {
                                 xpp.next();
                                 medicine.setItemSeq(xpp.getText());
@@ -135,28 +120,24 @@ public class HomeFragment extends Fragment {
                         }
                         break;
 
-                    case XmlPullParser.END_TAG:
+                    case XmlPullParser.END_TAG: // 끝 태그일 경우
                         if (xpp.getName().equals("item") && medicine != null) {
-                            resultList.add(medicine);
-                            medicineMap.put(medicine.getItemSeq(), medicine); // 추가된 부분
-                            medicine = null;
+                            resultList.add(medicine); // 결과 리스트에 약 객체 추가
+                            medicineMap.put(medicine.getItemSeq(), medicine); // 맵에 약 객체 추가
+                            medicine = null; // 현재 약 객체 초기화
                         }
                         break;
                 }
-                eventType = xpp.next();
+                eventType = xpp.next(); // 다음 이벤트
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        } catch (Exception e) {e.printStackTrace();}
         return resultList;
     }
 
     public static List<Medicine> getAllMedicines() {
         return new ArrayList<>(medicineMap.values());
     }
-
-    public static Medicine findMedicineByItemSeq(String itemSeq) {
+    public static Medicine getMedicine(String itemSeq) {
         return medicineMap.get(itemSeq);
     }
 }

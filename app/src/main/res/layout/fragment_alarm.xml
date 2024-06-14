@@ -10,26 +10,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:timePickerMode="spinner" />
-    <Button
-    android:id="@+id/set_alarm_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="알람 설정" />
-    <Button
-    android:id="@+id/select_medicine_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="약 선택"
-    android:layout_marginBottom="16dp" />
 
     <TextView
         android:id="@+id/selected_medicine_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="선택된 약: 없음"
-        android:layout_marginBottom="16dp" />
+        android:text="선택된 약:"/>
 
+    <Button
+    android:id="@+id/select_medicine_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="약 선택" />
 
+    <Button
+        android:id="@+id/set_alarm_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="알람 설정" />
 
     <ListView
         android:id="@+id/alarm_list_view"
