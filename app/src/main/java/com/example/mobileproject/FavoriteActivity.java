@@ -15,7 +15,7 @@ import java.util.List;
 
 public class FavoriteActivity extends AppCompatActivity {
 
-    private static final String NAME = "user_favorites";
+    private static final String NAME = "user_favorite";
     private static final String KEY = "favorite_medicine";
 
     private ListView listView;
@@ -58,11 +58,11 @@ public class FavoriteActivity extends AppCompatActivity {
     }
 
     public static List<Medicine> getFavorite(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);  // 저장된 즐겨찾기 셋 가져옴
         Set<String> favorite = sp.getStringSet(KEY, new HashSet<>());
         List<Medicine> favoriteMedicine = new ArrayList<>();
 
-        for (String itemSeq : favorite) {
+        for (String itemSeq : favorite) { // 각 즐겨찾기 항목에 대해 Medicine 객체 찾아 리스트에 추가
             Medicine medicine = HomeFragment.getMedicine(itemSeq);
             if (medicine != null) favoriteMedicine.add(medicine);
         }

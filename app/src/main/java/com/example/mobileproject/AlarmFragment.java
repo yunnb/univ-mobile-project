@@ -57,7 +57,7 @@ public class AlarmFragment extends Fragment {
         selectMedicineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showMedicineSelectionDialog();
+                selectMedicine();
             }
         });
 
@@ -71,7 +71,7 @@ public class AlarmFragment extends Fragment {
         return view;
     }
 
-    private void showMedicineSelectionDialog() {
+    private void selectMedicine() {
         List<Medicine> favorite = FavoriteActivity.getFavorite(getContext());
         if (favorite.isEmpty()) {
             Toast.makeText(getContext(), "즐겨찾기된 약이 없습니다", Toast.LENGTH_SHORT).show();
@@ -130,37 +130,36 @@ public class AlarmFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             Alarm alarm = getItem(position);
-            if (convertView == null)
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.alarm_item, parent, false);
+            if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.alarm_item, parent, false);
 
             TextView alarmTime = convertView.findViewById(R.id.alarm_time);
             TextView alarmMedicine = convertView.findViewById(R.id.alarm_medicine);
             Switch alarmSwitch = convertView.findViewById(R.id.alarm_switch);
-            Button deleteButton = convertView.findViewById(R.id.delete_alarm_button);
+            Button deleteBtn = convertView.findViewById(R.id.delete_alarm_button);
 
 
             alarmTime.setText(String.format("%02d:%02d", alarm.getHour(), alarm.getMinute())); // 알람 시간 설정
             alarmSwitch.setChecked(alarm.isEnabled()); // 알람 스위치 상태 설정
 
-            String medicineName = alarm.getMedicineName();
-            if (medicineName != null && medicineName.length() > 15)
-                medicineName = medicineName.substring(0, 15) + "...";
+            String medicineName = alarm.getMedicineName();  // 15글자 이상 출력 제어
+            if (medicineName.length() > 15) medicineName = medicineName.substring(0, 15) + "...";
 
-            alarmMedicine.setText(medicineName != null ? medicineName : "");
+            if (medicineName != null) alarmMedicine.setText(medicineName);
+            else alarmMedicine.setText("");
 
             alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     alarm.setEnabled(isChecked);
-                    if (isChecked) setAlarm(alarm, position);
-                    else cancelAlarm(position);
+                    if (isChecked) onAlarm(alarm, position);
+                    else offAlarm(position);
                 }
             });
 
-            deleteButton.setOnClickListener(new View.OnClickListener() {
+            deleteBtn.setOnClickListener(new View.OnClickListener() {  // 알람 삭제
                 @Override
                 public void onClick(View v) {
-                    cancelAlarm(position);
+                    offAlarm(position);
                     AlarmFragment.this.alarmList.remove(position);
                     notifyDataSetChanged();
                 }
@@ -168,7 +167,7 @@ public class AlarmFragment extends Fragment {
             return convertView;
         }
 
-        private void setAlarm(Alarm alarm, int requestCode) {
+        private void onAlarm(Alarm alarm, int requestCode) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, alarm.getHour());
             calendar.set(Calendar.MINUTE, alarm.getMinute());
@@ -179,11 +178,10 @@ public class AlarmFragment extends Fragment {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE);
 
             if (alarm.getMedicineName() != null) intent.putExtra("medicine_name", alarm.getMedicineName());
-            if (alarmManager != null)
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            if (alarmManager != null) alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }
 
-        private void cancelAlarm(int requestCode) {
+        private void offAlarm(int requestCode) {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE);

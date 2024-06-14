@@ -27,9 +27,8 @@ public class NewsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_news, container, false);
 
         newsListView = view.findViewById(R.id.news_listview);
-
         newsList = new ArrayList<>();
-        // Sample news data
+
         newsList.add(new News("주사 한 방에 48억원…세계에서 가장 비싼 약 알아보니", R.drawable.pfizer,
                 "글로벌 제약사 화이자가 개발한 B형 혈우병 유전자치료제가 미국 식품의약국(FDA) 승인을 받았습니다. 치료제 가격이 무려 48억원에 달합니다.\n" +
                         "\n" +
@@ -99,9 +98,7 @@ public class NewsFragment extends Fragment {
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             News news = getItem(position);
-
-            if (convertView == null)
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.news_item, parent, false);
+            if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.news_item, parent, false);
 
             ImageView img = convertView.findViewById(R.id.news_image);
             TextView title = convertView.findViewById(R.id.news_title);

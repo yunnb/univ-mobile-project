@@ -69,9 +69,8 @@ public class DiaryFragment extends Fragment {
                 if (diaryEdit.getText().toString().isEmpty()) {
                     Toast.makeText(getContext(), "일기를 작성해 주세요!", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (ratingBar.getRating() == 0) {
-                    Toast.makeText(getContext(), "오늘의 기분을 별점으로 남겨주세요!", Toast.LENGTH_SHORT).show();
-                }
+                } else if (ratingBar.getRating() == 0) Toast.makeText(getContext(), "오늘의 기분을 별점으로 남겨주세요!", Toast.LENGTH_SHORT).show();
+
                 try {
                     FileOutputStream fos = getContext().openFileOutput(filename, Context.MODE_PRIVATE);
                     String str = diaryEdit.getText().toString() + "\n" + ratingBar.getRating();
@@ -97,13 +96,13 @@ public class DiaryFragment extends Fragment {
             int len = infs.read(txt);
             infs.close();
             String content = (new String(txt, 0, len)).trim();
-            int separatorIndex = content.lastIndexOf("\n");
-            if (separatorIndex != -1) {
-                diaryStr[0] = content.substring(0, separatorIndex);
-                diaryStr[1] = content.substring(separatorIndex + 1);
-            } else {
-                diaryStr[0] = content;
-            }
+
+            int sIdx = content.lastIndexOf("\n");
+            if (sIdx != -1) {
+                diaryStr[0] = content.substring(0, sIdx);
+                diaryStr[1] = content.substring(sIdx + 1);
+            } else diaryStr[0] = content;
+
             writeBtn.setText("수정하기");
         } catch (FileNotFoundException e) {
             diaryEdit.setHint("일기를 작성해 보세요!");
@@ -111,6 +110,7 @@ public class DiaryFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return diaryStr;
     }
 }
