@@ -7,12 +7,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SearchResultsActivity extends AppCompatActivity {
 
-    private List<Medicine> medicines;
+    private List<Medicine> medicineList;
     private ListView listView;
     private MedicineAdapter adapter;
 
@@ -23,40 +22,40 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.list_view);
 
-        ArrayList<String> selectedShapes = getIntent().getStringArrayListExtra("selectedShapes");
-        ArrayList<String> selectedColors = getIntent().getStringArrayListExtra("selectedColors");
-        ArrayList<String> selectedTypes = getIntent().getStringArrayListExtra("selectedTypes");
+        ArrayList<String> selectShape = getIntent().getStringArrayListExtra("selectShape");
+        ArrayList<String> selectColor = getIntent().getStringArrayListExtra("selectColor");
+        ArrayList<String> selectType = getIntent().getStringArrayListExtra("selectType");
 
-        medicines = filterMedicines(selectedShapes, selectedColors, selectedTypes);
-        if (medicines.isEmpty()) {
+        medicineList = medicineFilter(selectShape, selectColor, selectType);
+        if (medicineList.isEmpty()) {
             Toast.makeText(this, "검색된 결과가 없습니다", Toast.LENGTH_SHORT).show();
-            finish(); // 결과가 없으면 리스트뷰 화면을 종료
+            finish();
             return;
         }
 
-        adapter = new MedicineAdapter(this, medicines);
+        adapter = new MedicineAdapter(this, medicineList);
         listView.setAdapter(adapter);
     }
 
-    private List<Medicine> filterMedicines(ArrayList<String> shapes, ArrayList<String> colors, ArrayList<String> types) {
-        List<Medicine> allMedicines = HomeFragment.getAllMedicines();
-        List<Medicine> filteredMedicines = new ArrayList<>();
+    private List<Medicine> medicineFilter(ArrayList<String> shape, ArrayList<String> color, ArrayList<String> type) {
+        List<Medicine> allMedicine = HomeFragment.getAllMedicines();
+        List<Medicine> finishFilterMedicine = new ArrayList<>();
 
-        for (Medicine medicine : allMedicines) {
-            boolean matchesShape = shapes.isEmpty() || shapes.contains(medicine.getDrugShape());
-            boolean matchesColor = colors.isEmpty() || matchesColor(medicine.getColorClass(), colors);
-            boolean matchesType = types.isEmpty() || types.contains(medicine.getEtcOtcName());
+        for (Medicine medicine : allMedicine) {
+            boolean matchesShape = shape.isEmpty() || shape.contains(medicine.getDrugShape());
+            boolean matchesColor = color.isEmpty() || matchesColor(medicine.getColorClass(), color);
+            boolean matchesType = type.isEmpty() || type.contains(medicine.getEtcOtcName());
 
-            if (matchesShape && matchesColor && matchesType) filteredMedicines.add(medicine);
+            if (matchesShape && matchesColor && matchesType) finishFilterMedicine.add(medicine);
         }
 
-        return filteredMedicines;
+        return finishFilterMedicine;
     }
 
-    private boolean matchesColor(String medicineColor, List<String> selectedColors) {
-        if (medicineColor == null || selectedColors.isEmpty()) return true;
+    private boolean matchesColor(String medicineColor, List<String> selectColor) {
+        if (medicineColor == null || selectColor.isEmpty()) return true;
 
-        for (String color : selectedColors) {
+        for (String color : selectColor) {
             switch (color) {
                 case "하양":
                     if (medicineColor.contains("하양") || medicineColor.contains("투명")) return true;

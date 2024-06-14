@@ -11,6 +11,7 @@
         android:text="의약품 종류"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:layout_marginTop="2dp"
         android:layout_marginBottom="8dp" />
 
     <GridLayout
@@ -18,19 +19,22 @@
         android:layout_height="wrap_content"
         android:columnCount="2"
         android:padding="8dp"
-        android:useDefaultMargins="true">
+        android:useDefaultMargins="true"
+        android:layout_marginBottom="16dp">
 
         <CheckBox
-            android:id="@+id/checkbox_etc"
+            android:id="@+id/cb_etc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="전문의약품" />
+            android:text="전문의약품"
+            android:textSize="15sp"/>
 
         <CheckBox
-            android:id="@+id/checkbox_otc"
+            android:id="@+id/cb_otc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="일반의약품" />
+            android:text="일반의약품"
+            android:textSize="15sp" />
 
     </GridLayout>
 
@@ -52,77 +56,88 @@
         android:useDefaultMargins="true">
 
         <CheckBox
-            android:id="@+id/checkbox_circle"
+            android:id="@+id/cb_circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="원형" />
+            android:text="원형"
+            android:textSize="15sp" />
 
         <CheckBox
-            android:id="@+id/checkbox_oval"
+            android:id="@+id/cb_oval"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="타원형" />
+            android:text="타원형"
+            android:textSize="15sp" />
 
         <CheckBox
-            android:id="@+id/checkbox_rectangular"
+            android:id="@+id/cb_rectangular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="장방형" />
+            android:text="장방형"
+            android:textSize="15sp"/>
 
         <CheckBox
-            android:id="@+id/checkbox_semi_circle"
+            android:id="@+id/cb_semi_circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="반원형" />
+            android:text="반원형"
+            android:textSize="15sp"/>
 
         <CheckBox
-            android:id="@+id/checkbox_diamond"
+            android:id="@+id/cb_diamond"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="마름모" />
+            android:text="마름모"
+            android:textSize="15sp"/>
 
         <CheckBox
-            android:id="@+id/checkbox_triangle"
+            android:id="@+id/cb_triangle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="삼각형" />
+            android:text="삼각형"
+            android:textSize="15sp" />
 
         <CheckBox
-            android:id="@+id/checkbox_square"
+            android:id="@+id/cb_square"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="사각형" />
+            android:text="사각형"
+            android:textSize="15sp" />
 
         <CheckBox
-            android:id="@+id/checkbox_pentagon"
+            android:id="@+id/cb_pentagon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="오각형" />
+            android:text="오각형"
+            android:textSize="15sp"/>
 
         <CheckBox
-            android:id="@+id/checkbox_hexagon"
+            android:id="@+id/cb_hexagon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="육각형" />
+            android:text="육각형"
+            android:textSize="15sp"/>
 
         <CheckBox
-            android:id="@+id/checkbox_octagon"
+            android:id="@+id/cb_octagon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="팔각형" />
+            android:text="팔각형"
+            android:textSize="15sp"/>
 
         <CheckBox
-            android:id="@+id/checkbox_other"
+            android:id="@+id/cb_other"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="기타" />
+            android:text="기타"
+            android:textSize="15sp" />
 
     </GridLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="색상"
+        android:text="색상 계열"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />
@@ -135,55 +150,61 @@
         android:useDefaultMargins="true">
 
         <CheckBox
-            android:id="@+id/checkbox_white"
+            android:id="@+id/cb_white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="하양" />
+            android:text="하양"
+            android:textSize="15sp"/>
 
         <CheckBox
-            android:id="@+id/checkbox_red"
+            android:id="@+id/cb_red"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="빨강" />
+            android:text="빨강"
+            android:textSize="15sp"/>
 
         <CheckBox
-            android:id="@+id/checkbox_yellow"
+            android:id="@+id/cb_yellow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="노랑" />
+            android:text="노랑"
+            android:textSize="15sp" />
 
         <CheckBox
-            android:id="@+id/checkbox_green"
+            android:id="@+id/cb_green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="초록" />
+            android:text="초록"
+            android:textSize="15sp"/>
 
         <CheckBox
-            android:id="@+id/checkbox_blue"
+            android:id="@+id/cb_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="파랑" />
+            android:text="파랑"
+            android:textSize="15sp" />
 
         <CheckBox
-            android:id="@+id/checkbox_other_color"
+            android:id="@+id/cb_other_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="기타" />
+            android:text="기타"
+            android:textSize="15sp" />
 
     </GridLayout>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/categoryBtn"
+        android:id="@+id/category_btn"
         android:layout_gravity="center"
         android:text="검색"
-        />
+        android:textSize="16sp"/>
 
     <Button
-        android:id="@+id/view_favorites_button"
+        android:id="@+id/favorite_view_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="즐겨찾기 항목 보기"
-        android:layout_marginTop="16dp"/>
+        android:textSize="16sp"/>
 </LinearLayout>

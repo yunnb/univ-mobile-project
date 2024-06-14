@@ -7,28 +7,36 @@
     tools:context=".DiaryFragment">
 
     <DatePicker
-        android:id="@+id/datePicker1"
+        android:id="@+id/datePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:calendarViewShown="false"
-        android:datePickerMode="spinner"
-        android:paddingTop="60px"/>
+        android:datePickerMode="spinner" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="1.0"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"/>
 
     <EditText
-        android:id="@+id/edtDiary"
+        android:id="@+id/diaryEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lines="12"
+        android:lines="10"
         android:background="#F1F1F1"
-        android:padding="40px"
+        android:padding="15dp"
         android:gravity="top"
-        android:hint="일기를 작성하세요" />
+        android:hint="일기를 작성하세요." />
 
     <Button
-        android:id="@+id/btnWrite"
+        android:id="@+id/writeBtn"
         android:layout_width="match_parent"
         android:layout_height="120px"
         android:enabled="false"
-        android:text="저장" />
+        android:text="저장하기" />
 
 </LinearLayout>

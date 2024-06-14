@@ -16,68 +16,61 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 public class CategoryFragment extends Fragment {
-    private CheckBox checkboxCircle, checkboxOval, checkboxRectangular, checkboxSemiCircle, checkboxDiamond, checkboxTriangle, checkboxSquare, checkboxPentagon, checkboxHexagon, checkboxOctagon, checkboxOther;
-    private CheckBox checkboxWhite, checkboxRed, checkboxYellow, checkboxGreen, checkboxBlue, checkboxOtherColor;
-    private CheckBox checkboxEtc, checkboxOtc;
-    private Button searchButton, viewFavoritesButton;
+    private CheckBox cbCircle, cbOval, cbRectangular, cbSemiCircle, cbDiamond, cbTriangle, cbSquare, cbPentagon, cbHexagon, cbOctagon, cbOther;
+    private CheckBox cbWhite, cbRed, cbYellow, cbGreen, cbBlue, cbOtherColor;
+    private CheckBox cbEtc, cbOtc;
+    private Button searchBtn, favoriteViewBtn;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category, container, false);
 
-        // 체크박스 초기화
-        checkboxCircle = view.findViewById(R.id.checkbox_circle);
-        checkboxOval = view.findViewById(R.id.checkbox_oval);
-        checkboxRectangular = view.findViewById(R.id.checkbox_rectangular);
-        checkboxSemiCircle = view.findViewById(R.id.checkbox_semi_circle);
-        checkboxDiamond = view.findViewById(R.id.checkbox_diamond);
-        checkboxTriangle = view.findViewById(R.id.checkbox_triangle);
-        checkboxSquare = view.findViewById(R.id.checkbox_square);
-        checkboxPentagon = view.findViewById(R.id.checkbox_pentagon);
-        checkboxHexagon = view.findViewById(R.id.checkbox_hexagon);
-        checkboxOctagon = view.findViewById(R.id.checkbox_octagon);
-        checkboxOther = view.findViewById(R.id.checkbox_other);
+        cbCircle = view.findViewById(R.id.cb_circle);
+        cbOval = view.findViewById(R.id.cb_oval);
+        cbRectangular = view.findViewById(R.id.cb_rectangular);
+        cbSemiCircle = view.findViewById(R.id.cb_semi_circle);
+        cbDiamond = view.findViewById(R.id.cb_diamond);
+        cbTriangle = view.findViewById(R.id.cb_triangle);
+        cbSquare = view.findViewById(R.id.cb_square);
+        cbPentagon = view.findViewById(R.id.cb_pentagon);
+        cbHexagon = view.findViewById(R.id.cb_hexagon);
+        cbOctagon = view.findViewById(R.id.cb_octagon);
+        cbOther = view.findViewById(R.id.cb_other);
 
-        checkboxWhite = view.findViewById(R.id.checkbox_white);
-        checkboxRed = view.findViewById(R.id.checkbox_red);
-        checkboxYellow = view.findViewById(R.id.checkbox_yellow);
-        checkboxGreen = view.findViewById(R.id.checkbox_green);
-        checkboxBlue = view.findViewById(R.id.checkbox_blue);
-        checkboxOtherColor = view.findViewById(R.id.checkbox_other_color);
+        cbWhite = view.findViewById(R.id.cb_white);
+        cbRed = view.findViewById(R.id.cb_red);
+        cbYellow = view.findViewById(R.id.cb_yellow);
+        cbGreen = view.findViewById(R.id.cb_green);
+        cbBlue = view.findViewById(R.id.cb_blue);
+        cbOtherColor = view.findViewById(R.id.cb_other_color);
 
-        checkboxEtc = view.findViewById(R.id.checkbox_etc);
-        checkboxOtc = view.findViewById(R.id.checkbox_otc);
+        cbEtc = view.findViewById(R.id.cb_etc);
+        cbOtc = view.findViewById(R.id.cb_otc);
 
-        // 검색 버튼 초기화 및 클릭 이벤트 설정
-        searchButton = view.findViewById(R.id.categoryBtn);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        searchBtn = view.findViewById(R.id.category_btn);
+        searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!anyCheckboxChecked()) {
+                if (!checkCheckBox()) {
                     Toast.makeText(getContext(), "체크박스를 선택하세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                ArrayList<String> selectedShapes = getSelectedShapes();
-                ArrayList<String> selectedColors = getSelectedColors();
-                ArrayList<String> selectedTypes = getSelectedTypes();
 
-                if (selectedShapes.isEmpty() && selectedColors.isEmpty() && selectedTypes.isEmpty()) {
-                    Toast.makeText(getContext(), "선택된 필터가 없습니다", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                ArrayList<String> selectShape = getSelectShape();
+                ArrayList<String> selectColor = getSelectColor();
+                ArrayList<String> selectType = getSelectType();
 
                 Intent intent = new Intent(getActivity(), SearchResultsActivity.class);
-                intent.putStringArrayListExtra("selectedShapes", selectedShapes);
-                intent.putStringArrayListExtra("selectedColors", selectedColors);
-                intent.putStringArrayListExtra("selectedTypes", selectedTypes);
+                intent.putStringArrayListExtra("selectShape", selectShape);
+                intent.putStringArrayListExtra("selectColor", selectColor);
+                intent.putStringArrayListExtra("selectType", selectType);
                 startActivity(intent);
             }
         });
 
-        // 즐겨찾기 보기 버튼 초기화 및 클릭 이벤트 설정
-        viewFavoritesButton = view.findViewById(R.id.view_favorites_button);
-        viewFavoritesButton.setOnClickListener(new View.OnClickListener() {
+        favoriteViewBtn = view.findViewById(R.id.favorite_view_btn);
+        favoriteViewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), FavoriteActivity.class);
@@ -88,75 +81,71 @@ public class CategoryFragment extends Fragment {
         return view;
     }
 
-    // 하나 이상의 체크박스가 선택되었는지 확인하는 메서드
-    private boolean anyCheckboxChecked() {
-        return checkboxCircle.isChecked() || checkboxOval.isChecked() || checkboxRectangular.isChecked() || checkboxSemiCircle.isChecked() ||
-                checkboxDiamond.isChecked() || checkboxTriangle.isChecked() || checkboxSquare.isChecked() || checkboxPentagon.isChecked() ||
-                checkboxHexagon.isChecked() || checkboxOctagon.isChecked() || checkboxOther.isChecked() ||
-                checkboxWhite.isChecked() || checkboxRed.isChecked() || checkboxYellow.isChecked() || checkboxGreen.isChecked() ||
-                checkboxBlue.isChecked() || checkboxOtherColor.isChecked() ||
-                checkboxEtc.isChecked() || checkboxOtc.isChecked();
+    private boolean checkCheckBox() { // 하나 이상은 무조건 선택해야 함
+        return cbCircle.isChecked() || cbOval.isChecked() || cbRectangular.isChecked() || cbSemiCircle.isChecked() ||
+                cbDiamond.isChecked() || cbTriangle.isChecked() || cbSquare.isChecked() || cbPentagon.isChecked() ||
+                cbHexagon.isChecked() || cbOctagon.isChecked() || cbOther.isChecked() ||
+                cbWhite.isChecked() || cbRed.isChecked() || cbYellow.isChecked() || cbGreen.isChecked() ||
+                cbBlue.isChecked() || cbOtherColor.isChecked() ||
+                cbEtc.isChecked() || cbOtc.isChecked();
     }
 
-    // 선택된 모양 체크박스 값을 가져오는 메서드
-    private ArrayList<String> getSelectedShapes() {
-        ArrayList<String> selectedShapes = new ArrayList<>();
-        if (checkboxCircle.isChecked()) selectedShapes.add("원형");
-        if (checkboxOval.isChecked()) selectedShapes.add("타원형");
-        if (checkboxRectangular.isChecked()) selectedShapes.add("직사각형");
-        if (checkboxSemiCircle.isChecked()) selectedShapes.add("반원형");
-        if (checkboxDiamond.isChecked()) selectedShapes.add("다이아몬드형");
-        if (checkboxTriangle.isChecked()) selectedShapes.add("삼각형");
-        if (checkboxSquare.isChecked()) selectedShapes.add("정사각형");
-        if (checkboxPentagon.isChecked()) selectedShapes.add("오각형");
-        if (checkboxHexagon.isChecked()) selectedShapes.add("육각형");
-        if (checkboxOctagon.isChecked()) selectedShapes.add("팔각형");
-        if (checkboxOther.isChecked()) selectedShapes.add("기타");
+    private ArrayList<String> getSelectShape() {
+        ArrayList<String> selectShape = new ArrayList<>();
+        if (cbCircle.isChecked()) selectShape.add("원형");
+        if (cbOval.isChecked()) selectShape.add("타원형");
+        if (cbRectangular.isChecked()) selectShape.add("직사각형");
+        if (cbSemiCircle.isChecked()) selectShape.add("반원형");
+        if (cbDiamond.isChecked()) selectShape.add("다이아몬드형");
+        if (cbTriangle.isChecked()) selectShape.add("삼각형");
+        if (cbSquare.isChecked()) selectShape.add("정사각형");
+        if (cbPentagon.isChecked()) selectShape.add("오각형");
+        if (cbHexagon.isChecked()) selectShape.add("육각형");
+        if (cbOctagon.isChecked()) selectShape.add("팔각형");
+        if (cbOther.isChecked()) selectShape.add("기타");
 
-        return selectedShapes;
+        return selectShape;
     }
 
-    // 선택된 색상 체크박스 값을 가져오는 메서드
-    private ArrayList<String> getSelectedColors() {
-        ArrayList<String> selectedColors = new ArrayList<>();
-        if (checkboxWhite.isChecked()) {
-            selectedColors.add("하양");
-            selectedColors.add("투명");
+    private ArrayList<String> getSelectColor() {
+        ArrayList<String> selectColor = new ArrayList<>();
+        if (cbWhite.isChecked()) {
+            selectColor.add("하양");
+            selectColor.add("투명");
         }
-        if (checkboxRed.isChecked()) {
-            selectedColors.add("분홍");
-            selectedColors.add("빨강");
-            selectedColors.add("자주");
+        if (cbRed.isChecked()) {
+            selectColor.add("분홍");
+            selectColor.add("빨강");
+            selectColor.add("자주");
         }
-        if (checkboxYellow.isChecked()) {
-            selectedColors.add("노랑");
-            selectedColors.add("주황");
+        if (cbYellow.isChecked()) {
+            selectColor.add("노랑");
+            selectColor.add("주황");
         }
-        if (checkboxGreen.isChecked()) {
-            selectedColors.add("연두");
-            selectedColors.add("초록");
-            selectedColors.add("청록");
+        if (cbGreen.isChecked()) {
+            selectColor.add("연두");
+            selectColor.add("초록");
+            selectColor.add("청록");
         }
-        if (checkboxBlue.isChecked()) {
-            selectedColors.add("파랑");
-            selectedColors.add("남색");
-            selectedColors.add("보라");
+        if (cbBlue.isChecked()) {
+            selectColor.add("파랑");
+            selectColor.add("남색");
+            selectColor.add("보라");
         }
-        if (checkboxOtherColor.isChecked()) {
-            selectedColors.add("갈색");
-            selectedColors.add("회색");
-            selectedColors.add("검정");
+        if (cbOtherColor.isChecked()) {
+            selectColor.add("갈색");
+            selectColor.add("회색");
+            selectColor.add("검정");
         }
 
-        return selectedColors;
+        return selectColor;
     }
 
-    // 선택된 타입 체크박스 값을 가져오는 메서드
-    private ArrayList<String> getSelectedTypes() {
-        ArrayList<String> selectedTypes = new ArrayList<>();
-        if (checkboxEtc.isChecked()) selectedTypes.add("전문의약품");
-        if (checkboxOtc.isChecked()) selectedTypes.add("일반의약품");
+    private ArrayList<String> getSelectType() {
+        ArrayList<String> selectType = new ArrayList<>();
+        if (cbEtc.isChecked()) selectType.add("전문의약품");
+        if (cbOtc.isChecked()) selectType.add("일반의약품");
 
-        return selectedTypes;
+        return selectType;
     }
 }

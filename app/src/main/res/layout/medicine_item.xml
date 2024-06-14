@@ -14,7 +14,7 @@
         android:textSize="18sp" />
 
     <Button
-        android:id="@+id/favorite_button"
+        android:id="@+id/favorite_btn"
         android:layout_width="150px"
         android:layout_height="wrap_content"
         android:text="☆" />

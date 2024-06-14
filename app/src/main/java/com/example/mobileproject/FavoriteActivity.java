@@ -3,7 +3,6 @@ package com.example.mobileproject;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,9 +15,8 @@ import java.util.List;
 
 public class FavoriteActivity extends AppCompatActivity {
 
-    private static final String PREFS_NAME = "favorites";
-    private static final String FAVORITES_KEY = "favorite_medicines";
-    private static final String TAG = "FavoriteManager";
+    private static final String NAME = "user_favorites";
+    private static final String KEY = "favorite_medicine";
 
     private ListView listView;
     private MedicineAdapter adapter;
@@ -26,71 +24,48 @@ public class FavoriteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorites);
+        setContentView(R.layout.activity_favorite);
 
         listView = findViewById(R.id.list_view);
-
-        List<Medicine> favoriteMedicines = getFavorites(this);
-        if (favoriteMedicines.isEmpty()) {
+        List<Medicine> favoriteMedicine = getFavorite(this);
+        if (favoriteMedicine.isEmpty()) {
             Toast.makeText(this, "즐겨찾기된 약이 없습니다", Toast.LENGTH_SHORT).show();
-            finish(); // 결과가 없으면 리스트뷰 화면을 종료
+            finish(); // 결과가 없으면 리스트 뷰 화면을 종료
             return;
         }
-
-        adapter = new MedicineAdapter(this, favoriteMedicines);
+        adapter = new MedicineAdapter(this, favoriteMedicine);
         listView.setAdapter(adapter);
     }
 
-    // 즐겨찾기 추가 메서드
     public static void addFavorite(Context context, String itemSeq) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        Set<String> favorites = new HashSet<>(prefs.getStringSet(FAVORITES_KEY, new HashSet<>()));
-        favorites.add(itemSeq);
-        prefs.edit().putStringSet(FAVORITES_KEY, favorites).apply();
-
-        Medicine medicine = HomeFragment.getMedicine(itemSeq);
-        if (medicine != null) {
-            Log.d(TAG, "즐겨찾기 추가: " + medicine.getItemName());
-        } else {
-            Log.d(TAG, "즐겨찾기 추가: 약 정보를 찾을 수 없습니다.");
-        }
+        SharedPreferences sp = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Set<String> favorite = new HashSet<>(sp.getStringSet(KEY, new HashSet<>()));
+        favorite.add(itemSeq);
+        sp.edit().putStringSet(KEY, favorite).apply();
     }
 
-    // 즐겨찾기 제거 메서드
     public static void removeFavorite(Context context, String itemSeq) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        Set<String> favorites = new HashSet<>(prefs.getStringSet(FAVORITES_KEY, new HashSet<>()));
-        favorites.remove(itemSeq);
-        prefs.edit().putStringSet(FAVORITES_KEY, favorites).apply();
-
-        Medicine medicine = HomeFragment.getMedicine(itemSeq);
-        if (medicine != null) {
-            Log.d(TAG, "즐겨찾기 제거: " + medicine.getItemName());
-        } else {
-            Log.d(TAG, "즐겨찾기 제거: 약 정보를 찾을 수 없습니다.");
-        }
+        SharedPreferences sp = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Set<String> favorite = new HashSet<>(sp.getStringSet(KEY, new HashSet<>()));
+        favorite.remove(itemSeq);
+        sp.edit().putStringSet(KEY, favorite).apply();
     }
 
-    // 즐겨찾기 여부 확인 메서드
     public static boolean isFavorite(Context context, String itemSeq) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        Set<String> favorites = prefs.getStringSet(FAVORITES_KEY, new HashSet<>());
-        return favorites.contains(itemSeq);
+        SharedPreferences sp = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Set<String> favorite = sp.getStringSet(KEY, new HashSet<>());
+        return favorite.contains(itemSeq);
     }
 
-    // 즐겨찾기 목록 가져오기 메서드
-    public static List<Medicine> getFavorites(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        Set<String> favorites = prefs.getStringSet(FAVORITES_KEY, new HashSet<>());
-        List<Medicine> favoriteMedicines = new ArrayList<>();
+    public static List<Medicine> getFavorite(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Set<String> favorite = sp.getStringSet(KEY, new HashSet<>());
+        List<Medicine> favoriteMedicine = new ArrayList<>();
 
-        for (String itemSeq : favorites) {
+        for (String itemSeq : favorite) {
             Medicine medicine = HomeFragment.getMedicine(itemSeq);
-            if (medicine != null) {
-                favoriteMedicines.add(medicine);
-            }
+            if (medicine != null) favoriteMedicine.add(medicine);
         }
-
-        return favoriteMedicines;
+        return favoriteMedicine;
     }
 }

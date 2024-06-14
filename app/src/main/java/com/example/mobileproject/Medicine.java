@@ -11,10 +11,6 @@ public class Medicine implements Serializable {
     private String className;   // 기타의 소화기관용약
     private String etcOtcName;  // 전문의약품
     private String formCodeName;    // 당의정, 필름코팅정
-    private String validTerm;
-    private String eeDocData;
-    private String udDocData;
-    private String nbDocData;
 
     public Medicine() {}
 
@@ -42,15 +38,4 @@ public class Medicine implements Serializable {
     public String getFormCodeName() { return formCodeName; }
     public void setFormCodeName(String formCodeName) { this.formCodeName = formCodeName; }
 
-    public String getValidTerm() { return validTerm; }
-    public void setValidTerm(String validTerm) { this.validTerm = validTerm; }
-
-    public String getEeDocData() { return eeDocData; }
-    public void setEeDocData(String eeDocData) { this.eeDocData = eeDocData; }
-
-    public String getUdDocData() { return udDocData; }
-    public void setUdDocData(String udDocData) { this.udDocData = udDocData; }
-
-    public String getNbDocData() { return nbDocData; }
-    public void setNbDocData(String nbDocData) { this.nbDocData = nbDocData; }
 }

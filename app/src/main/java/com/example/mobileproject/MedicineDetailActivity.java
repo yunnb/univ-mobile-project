@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MedicineDetailActivity extends AppCompatActivity {
 
     private Medicine medicine;
-    private Button favoriteButton;
+    private Button favoriteBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,48 +20,31 @@ public class MedicineDetailActivity extends AppCompatActivity {
 
         medicine = (Medicine) getIntent().getSerializableExtra("medicine");
 
-        TextView itemNameTextView = findViewById(R.id.itemName);
-        TextView chartTextView = findViewById(R.id.chart);
-        TextView drugShapeTextView = findViewById(R.id.drugShape);
-        TextView colorClass1TextView = findViewById(R.id.colorClass1);
-        TextView classNameTextView = findViewById(R.id.className);
-        TextView etcOtcNameTextView = findViewById(R.id.etcOtcName);
-        TextView formCodeNameTextView = findViewById(R.id.formCodeName);
-        TextView validTermTextView = findViewById(R.id.validTerm);
-        TextView eeDocDataTextView = findViewById(R.id.eeDocData);
-        TextView udDocDataTextView = findViewById(R.id.udDocData);
-        TextView nbDocDataTextView = findViewById(R.id.nbDocData);
-        favoriteButton = findViewById(R.id.favorite_button);
+        TextView itemNameText = findViewById(R.id.itemName);
+        TextView chartText = findViewById(R.id.chart);
+        TextView drugShapeText = findViewById(R.id.drugShape);
+        TextView colorClass1Text = findViewById(R.id.colorClass1);
+        TextView classNameText = findViewById(R.id.className);
+        TextView etcOtcNameText = findViewById(R.id.etcOtcName);
+        TextView formCodeNameText = findViewById(R.id.formCodeName);
+        favoriteBtn = findViewById(R.id.favorite_btn);
 
-        itemNameTextView.setText(medicine.getItemName());
-        chartTextView.setText(medicine.getChart());
-        drugShapeTextView.setText(medicine.getDrugShape());
-        colorClass1TextView.setText(medicine.getColorClass());
-        classNameTextView.setText(medicine.getClassName());
-        etcOtcNameTextView.setText(medicine.getEtcOtcName());
-        formCodeNameTextView.setText(medicine.getFormCodeName());
-        validTermTextView.setText(medicine.getValidTerm());
-        eeDocDataTextView.setText(medicine.getEeDocData());
-        udDocDataTextView.setText(medicine.getUdDocData());
-        nbDocDataTextView.setText(medicine.getNbDocData());
+        itemNameText.setText(medicine.getItemName());
+        chartText.setText(medicine.getChart());
+        drugShapeText.setText(medicine.getDrugShape());
+        colorClass1Text.setText(medicine.getColorClass());
+        classNameText.setText(medicine.getClassName());
+        etcOtcNameText.setText(medicine.getEtcOtcName());
+        formCodeNameText.setText(medicine.getFormCodeName());
 
-        updateFavoriteButton();
-
-        favoriteButton.setOnClickListener(new View.OnClickListener() {
+        favoriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                toggleFavorite();
-                updateFavoriteButton();
-            }
+            public void onClick(View v) { updateFavorite(); }
+
         });
     }
 
-    private void updateFavoriteButton() {
-        boolean isFavorite = FavoriteActivity.isFavorite(this, medicine.getItemSeq());
-        favoriteButton.setText(isFavorite ? "★" : "☆");
-    }
-
-    private void toggleFavorite() {
+    private void updateFavorite() {
         boolean isFavorite = FavoriteActivity.isFavorite(this, medicine.getItemSeq());
         if (isFavorite) {
             FavoriteActivity.removeFavorite(this, medicine.getItemSeq());

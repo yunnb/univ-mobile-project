@@ -14,34 +14,32 @@ import java.util.List;
 
 public class MedicineAdapter extends ArrayAdapter<Medicine> {
 
-    private List<Medicine> medicines;
+    private List<Medicine> medicineList;
     private Context context;
 
-    public MedicineAdapter(Context context, List<Medicine> medicines) {
-        super(context, 0, medicines);
+    public MedicineAdapter(Context context, List<Medicine> medicineList) {
+        super(context, 0, medicineList);
         this.context = context;
-        this.medicines = medicines;
+        this.medicineList = medicineList;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
+        if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.medicine_list_item, parent, false);
-        }
 
-        Medicine medicine = medicines.get(position);
+        Medicine medicine = medicineList.get(position);
+        TextView medicineText = convertView.findViewById(R.id.item_name);
+        Button favoriteBtn = convertView.findViewById(R.id.favorite_btn);
 
-        TextView medicineName = convertView.findViewById(R.id.item_name);
-        Button favoriteButton = convertView.findViewById(R.id.favorite_button);
+        medicineText.setText(medicine.getItemName());
+        updateFavoriteButton(favoriteBtn, medicine);
 
-        medicineName.setText(medicine.getItemName());
-        updateFavoriteButton(favoriteButton, medicine);
-
-        favoriteButton.setOnClickListener(new View.OnClickListener() {
+        favoriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toggleFavorite(medicine);
-                updateFavoriteButton(favoriteButton, medicine);
+                updateFavoriteButton(favoriteBtn, medicine);
             }
         });
 
@@ -53,7 +51,6 @@ public class MedicineAdapter extends ArrayAdapter<Medicine> {
                 context.startActivity(intent);
             }
         });
-
         return convertView;
     }
 
