@@ -26,7 +26,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         ArrayList<String> selectColor = getIntent().getStringArrayListExtra("selectColor");
         ArrayList<String> selectType = getIntent().getStringArrayListExtra("selectType");
 
-        medicineList = medicineFilter(selectShape, selectColor, selectType);
+        medicineList = filterMedicine(selectShape, selectColor, selectType);
         if (medicineList.isEmpty()) {
             Toast.makeText(this, "검색된 결과가 없습니다", Toast.LENGTH_SHORT).show();
             finish();
@@ -37,13 +37,13 @@ public class SearchResultsActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-    private List<Medicine> medicineFilter(ArrayList<String> shape, ArrayList<String> color, ArrayList<String> type) {
+    private List<Medicine> filterMedicine(ArrayList<String> shape, ArrayList<String> color, ArrayList<String> type) {
         List<Medicine> allMedicine = HomeFragment.getAllMedicines();
         List<Medicine> finishFilterMedicine = new ArrayList<>();
 
         for (Medicine medicine : allMedicine) {
             boolean matchesShape = shape.isEmpty() || shape.contains(medicine.getDrugShape());
-            boolean matchesColor = color.isEmpty() || matchesColor(medicine.getColorClass(), color);
+            boolean matchesColor = color.isEmpty() || matchColor(medicine.getColorClass(), color);
             boolean matchesType = type.isEmpty() || type.contains(medicine.getEtcOtcName());
 
             if (matchesShape && matchesColor && matchesType) finishFilterMedicine.add(medicine);
@@ -52,7 +52,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         return finishFilterMedicine;
     }
 
-    private boolean matchesColor(String medicineColor, List<String> selectColor) {
+    private boolean matchColor(String medicineColor, List<String> selectColor) {
         if (medicineColor == null || selectColor.isEmpty()) return true;
 
         for (String color : selectColor) {

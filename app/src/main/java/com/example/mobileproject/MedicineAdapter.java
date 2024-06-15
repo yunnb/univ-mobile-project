@@ -33,13 +33,13 @@ public class MedicineAdapter extends ArrayAdapter<Medicine> {
         Button favoriteBtn = convertView.findViewById(R.id.favorite_btn);
 
         medicineText.setText(medicine.getItemName());
-        updateFavoriteButton(favoriteBtn, medicine);
+        updateFavoriteBtn(favoriteBtn, medicine);
 
         favoriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFavorite(medicine);
-                updateFavoriteButton(favoriteBtn, medicine);
+                clickFavorite(medicine);
+                updateFavoriteBtn(favoriteBtn, medicine);
             }
         });
 
@@ -54,12 +54,12 @@ public class MedicineAdapter extends ArrayAdapter<Medicine> {
         return convertView;
     }
 
-    private void updateFavoriteButton(Button button, Medicine medicine) {
+    private void updateFavoriteBtn(Button button, Medicine medicine) {
         boolean isFavorite = FavoriteActivity.isFavorite(context, medicine.getItemSeq());
         button.setText(isFavorite ? "★" : "☆");
     }
 
-    private void toggleFavorite(Medicine medicine) {
+    private void clickFavorite(Medicine medicine) {
         boolean isFavorite = FavoriteActivity.isFavorite(context, medicine.getItemSeq());
         if (isFavorite) {
             FavoriteActivity.removeFavorite(context, medicine.getItemSeq());

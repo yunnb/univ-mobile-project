@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,26 +32,30 @@ import java.util.List;
 public class AlarmFragment extends Fragment {
 
     private TimePicker timePicker;
-    private Button setAlarmBtn;
-    private Button selectMedicineBtn;
+    private Button setAlarmBtn, selectMedicineBtn;
     private TextView selectMedicineText;
     private ListView alarmListView;
     private ArrayList<Alarm> alarmList;
     private AlarmAdapter alarmAdapter;
     private Medicine selectMedicine;
 
+    private static final String NAME = "alarm";
+    private static final String KEY = "alarm_list";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_alarm, container, false);
-
         timePicker = view.findViewById(R.id.time_picker);
         setAlarmBtn = view.findViewById(R.id.set_alarm_button);
         selectMedicineBtn = view.findViewById(R.id.select_medicine_button);
         selectMedicineText = view.findViewById(R.id.selected_medicine_text);
         alarmListView = view.findViewById(R.id.alarm_list_view);
 
-        alarmList = new ArrayList<>();
+        alarmList = loadAlarm(getContext());
+        if (alarmList == null) alarmList = new ArrayList<>();
+
+
         alarmAdapter = new AlarmAdapter(getContext(), alarmList);
         alarmListView.setAdapter(alarmAdapter);
 
@@ -82,11 +87,11 @@ public class AlarmFragment extends Fragment {
         for (int i = 0; i < favorite.size(); i++) medicineNames[i] = favorite.get(i).getItemName();
 
         new AlertDialog.Builder(getContext()).setTitle("약 선택").setItems(medicineNames, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        selectMedicine = favorite.get(which);
-                        selectMedicineText.setText("선택된 약: " + selectMedicine.getItemName());
-                    }
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                selectMedicine = favorite.get(which);
+                selectMedicineText.setText("선택된 약: " + selectMedicine.getItemName());
+            }
         }).show();
     }
 
@@ -114,6 +119,7 @@ public class AlarmFragment extends Fragment {
             Alarm alarm = new Alarm(hour, minute, true, selectMedicine.getItemName());
             alarmList.add(alarm);
             alarmAdapter.notifyDataSetChanged();
+            saveAlarm(getContext(), alarmList);
         }
     }
 
@@ -132,20 +138,19 @@ public class AlarmFragment extends Fragment {
             Alarm alarm = getItem(position);
             if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.alarm_item, parent, false);
 
-            TextView alarmTime = convertView.findViewById(R.id.alarm_time);
-            TextView alarmMedicine = convertView.findViewById(R.id.alarm_medicine);
+            TextView time = convertView.findViewById(R.id.alarm_time);
+            TextView medicine = convertView.findViewById(R.id.alarm_medicine);
             Switch alarmSwitch = convertView.findViewById(R.id.alarm_switch);
             Button deleteBtn = convertView.findViewById(R.id.delete_alarm_button);
 
-
-            alarmTime.setText(String.format("%02d:%02d", alarm.getHour(), alarm.getMinute())); // 알람 시간 설정
+            time.setText(String.format("%02d:%02d", alarm.getHour(), alarm.getMinute())); // 알람 시간 설정
             alarmSwitch.setChecked(alarm.isEnabled()); // 알람 스위치 상태 설정
 
             String medicineName = alarm.getMedicineName();  // 15글자 이상 출력 제어
             if (medicineName.length() > 15) medicineName = medicineName.substring(0, 15) + "...";
 
-            if (medicineName != null) alarmMedicine.setText(medicineName);
-            else alarmMedicine.setText("");
+            if (medicineName != null) medicine.setText(medicineName);
+            else medicine.setText("");
 
             alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -153,6 +158,7 @@ public class AlarmFragment extends Fragment {
                     alarm.setEnabled(isChecked);
                     if (isChecked) onAlarm(alarm, position);
                     else offAlarm(position);
+                    saveAlarm(context, alarmList); // 알람 상태 변경시 저장
                 }
             });
 
@@ -162,6 +168,7 @@ public class AlarmFragment extends Fragment {
                     offAlarm(position);
                     AlarmFragment.this.alarmList.remove(position);
                     notifyDataSetChanged();
+                    saveAlarm(context, alarmList); // 알람 삭제시 저장
                 }
             });
             return convertView;
@@ -198,37 +205,36 @@ public class AlarmFragment extends Fragment {
         }
     }
 
-    private class Alarm {
-        private int hour;
-        private int minute;
-        private boolean isEnabled;
-        private String medicineName;
-
-        public Alarm(int hour, int minute, boolean isEnabled,String medicineName) {
-            this.hour = hour;
-            this.minute = minute;
-            this.isEnabled = isEnabled;
-            this.medicineName = medicineName;
+    private void saveAlarm(Context context, List<Alarm> alarmList) {
+        SharedPreferences sp = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        StringBuilder sb = new StringBuilder();
+        for (Alarm alarm : alarmList) {
+            sb.append(alarm.getHour()).append(",")
+                    .append(alarm.getMinute()).append(",")
+                    .append(alarm.isEnabled()).append(",")
+                    .append(alarm.getMedicineName()).append(";");
         }
+        editor.putString(KEY, sb.toString());
+        editor.apply();
+    }
 
-        public int getHour() {
-            return hour;
+    private ArrayList<Alarm> loadAlarm(Context context) { // 알람 리스트 불러오기
+        SharedPreferences sp = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        String savedAlarms = sp.getString(KEY, null);
+        ArrayList<Alarm> alarmList = new ArrayList<>();
+        if (savedAlarms != null) {
+            String[] alarms = savedAlarms.split(";");
+            for (String alarmString : alarms) {
+                if (alarmString.isEmpty()) continue;
+                String[] alarmData = alarmString.split(",");
+                int hour = Integer.parseInt(alarmData[0]);
+                int minute = Integer.parseInt(alarmData[1]);
+                boolean isEnabled = Boolean.parseBoolean(alarmData[2]);
+                String medicineName = alarmData[3];
+                alarmList.add(new Alarm(hour, minute, isEnabled, medicineName));
+            }
         }
-
-        public int getMinute() {
-            return minute;
-        }
-
-        public boolean isEnabled() {
-            return isEnabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            isEnabled = enabled;
-        }
-
-        public String getMedicineName() {
-            return medicineName;
-        }
+        return alarmList;
     }
 }

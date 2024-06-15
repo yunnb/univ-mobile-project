@@ -15,8 +15,8 @@ import java.util.List;
 
 public class FavoriteActivity extends AppCompatActivity {
 
-    private static final String NAME = "user_favorite";
-    private static final String KEY = "favorite_medicine";
+    private static final String NAME = "favorite";
+    private static final String KEY = "favorite_list";
 
     private ListView listView;
     private MedicineAdapter adapter;

@@ -88,15 +88,15 @@ public class NewsFragment extends Fragment {
         private Context context;
         private List<News> newsList;
 
-        public NewsAdapter(@NonNull Context context, @NonNull List<News> objects) {
+        public NewsAdapter(Context context, List<News> objects) {
             super(context, 0, objects);
             this.context = context;
             this.newsList = objects;
         }
 
-        @NonNull
+
         @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
             News news = getItem(position);
             if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.news_item, parent, false);
 
